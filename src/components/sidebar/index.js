@@ -71,8 +71,8 @@ class Home extends React.Component {
     render() {
        return(
        <div>
-           <Button onClick={() => this.handleClick(1)}>{this.props.name}</Button>
-           <Drawer anchor = "left" open = {this.state.open} onClose= {this.handleClick(0)}>
+           <Button onClick={() => this.handleClick(1)}>Hamburger</Button>
+           <Drawer anchor = "left" open = {this.state.open} onClose= {() => this.handleClick(0)}>
              <Sidebar name="John Doe" streams={["Stream1", "Stream Two"]}/>
            </Drawer>
         </div> 

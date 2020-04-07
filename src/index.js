@@ -8,7 +8,6 @@ import * as serviceWorker from './serviceWorker';
 ReactDOM.render(
   <React.StrictMode>
     <Home name="John Doe" streams={["Stream1", "Stream Two"]} />
-    <Sidebar />
   </React.StrictMode>,
   document.getElementById('root')
 );
