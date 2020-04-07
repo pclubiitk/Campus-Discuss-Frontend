@@ -46,8 +46,4 @@ class Sidebar extends React.Component {
     }
 }
 
-
-ReactDOM.render(
-    <Sidebar name="John Doe" streams={["Stream1", "Stream Two"]}/>,
-    document.getElementById('root')
-);
+export default Sidebar;
