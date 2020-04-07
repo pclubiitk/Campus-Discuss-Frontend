@@ -12,31 +12,33 @@ function Profile(props) {
 class StreamsList extends React.Component {
     render() {
         return (
-            <li>{this.props.streamName}</li>
+            <li>
+                <Button color="primary" onClick={() => alert("clicked " + this.props.streamName)}>
+                    {this.props.streamName}
+                </Button>                                                                
+            </li>
         )
     }
 }
 class Sidebar extends React.Component {
     CreateStreamsList(streams) {
         let list = new Array();
-        console.log(streams);
-        console.log(streams[1]);
+
         for (let i = 0; i < streams.length; i++) {
-             list.push(<StreamsList streamName={streams[i]} />);
+            list.push(<StreamsList streamName={streams[i]} />);
         }
         return list;
     }
     render() {
         const streamsList=this.CreateStreamsList(this.props.streams);
         return (
-
             <nav>
                 <div className="sidebar">
                     <div className="profile">
                         <Profile name={this.props.name} />
                     </div>
                     <div className="streams-list">
-                        <ul className="sidenav">
+                        <ul className="sidenav" style={{listStyleType: "none"}}>
                             {streamsList}
                         </ul>
                     </div>
