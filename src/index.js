@@ -2,12 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import Home from './components/sidebar'
+import Home from './components/sidebar/index'
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Home name = "Click"/>
+    <Home name="John Doe" streams={["Stream1", "Stream Two"]} />
+    <Sidebar />
   </React.StrictMode>,
   document.getElementById('root')
 );
