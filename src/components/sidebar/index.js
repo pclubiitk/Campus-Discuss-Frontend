@@ -24,9 +24,8 @@ class StreamsList extends React.Component {
 class Sidebar extends React.Component {
     CreateStreamsList(streams) {
         let list = new Array();
-
-        for (let i = 0; i < streams.length; i++) {
-            list.push(<StreamsList streamName={streams[i]} />);
+        for (let stream of streams) {
+            list.push(<StreamsList streamName={stream} />);
         }
         return list;
     }
@@ -56,23 +55,17 @@ class Home extends React.Component {
        open: false
 	   }
 	 }
-    handleClick(i) {
-     if(i===1){
+    toggleSidebar(flag) {
        this.setState({
-          open: true,
+          open: {flag},
 	   });
      }
-     else{
-       this.setState({
-          open: false,  
-	 }); 
-     }
-}
+
     render() {
        return(
        <div>
-           <Button onClick={() => this.handleClick(1)}>Hamburger</Button>
-           <Drawer anchor = "left" open = {this.state.open} onClose= {() => this.handleClick(0)}>
+           <Button onClick={() => this.toggleSidebar(true)}>Hamburger</Button>
+           <Drawer anchor = "left" open = {this.state.open} onClose= {() => this.toggleSidebar(false)}>
              <Sidebar name="John Doe" streams={["Stream1", "Stream Two"]}/>
            </Drawer>
         </div> 
