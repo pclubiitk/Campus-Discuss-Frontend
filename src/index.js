@@ -2,19 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import Home from "./components/sidebar";
 import * as serviceWorker from "./serviceWorker";
 
-const name = "John Doe";
-const streams = [
-  "Stream1",
-  "Stream Two",
-  "This Is A Long Stream Name",
-  "And It Goes Like This",
-];
 ReactDOM.render(
   <React.StrictMode>
-    <Home name={name} streams={streams} />
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );
