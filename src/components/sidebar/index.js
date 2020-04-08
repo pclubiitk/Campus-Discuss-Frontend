@@ -57,9 +57,17 @@ class Home extends React.Component {
 	   }
 	 }
     toggleSidebar(flag) {
-       this.setState({
-          open: {flag},
-	   });
+        if (flag) {
+            this.setState({
+                open: true,
+            });
+        }
+        else {
+            this.setState({
+                open: false,
+            });
+        }
+        
      }
 
     render() {
