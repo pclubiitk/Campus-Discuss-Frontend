@@ -24,10 +24,7 @@ function StreamItem(props) {
 }
 
 function StreamsList(props) {
-  let list = new Array();
-  for (let stream of props.streams) {
-    list.push(<StreamItem streamName={stream} />);
-  }
+  const list = props.streams.map(stream => <StreamItem streamName={stream} />);
   return (
     <List component="nav" className="streams-list">
       {list}
