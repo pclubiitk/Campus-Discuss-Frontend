@@ -57,24 +57,11 @@ class Hamburger extends React.Component {
        open: false
 	   }
 	 }
-    toggleSidebar(flag) {
-        if (flag) {
-            this.setState({
-                open: true,
-            });
-        }
-        else {
-            this.setState({
-                open: false,
-            });
-        }
-     }
-
     render() {
        return(
        <div>
-           <Button onClick={() => this.toggleSidebar(true)}>Hamburger</Button>
-           <Drawer anchor = "left" open = {this.state.open} onClose= {() => this.toggleSidebar(false)}>
+           <Button onClick={() => this.setState({open: true,})}>Hamburger</Button>
+           <Drawer anchor = "left" open = {this.state.open} onClose= {() => this.setState({open: false,})}>
              <Sidebar name={this.props.name} streams={this.props.streams}/>
            </Drawer>
         </div> 
