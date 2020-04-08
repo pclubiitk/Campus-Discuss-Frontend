@@ -8,48 +8,49 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import './style.css';
 
 function Profile(props) {
+    // AccountCircleIcon can be replaced by Avatar when we add Profile Picture functionality
     return (
         <Button color="primary" startIcon={<AccountCircleIcon />}>{props.name}</Button>
     );
 }
 
-class StreamsList extends React.Component {
-    render() {
+function StreamItem(props) {
         return (
-                <ListItem button onClick={() => alert("clicked " + this.props.streamName)}>
-                    {this.props.streamName}
+                <ListItem button onClick={() => alert("clicked " + props.streamName)}>
+                    {props.streamName}
                 </ListItem>                                                                
         )
-    }
 }
-class Sidebar extends React.Component {
-    CreateStreamsList(streams) {
+    function StreamsList(props) {
         let list = new Array();
-        for (let stream of streams) {
-            list.push(<StreamsList streamName={stream} />);
+        for (let stream of props.streams) {
+            list.push(<StreamItem streamName={stream} />);
         }
-        return list;
-    }
-    render() {
-        const streamsList=this.CreateStreamsList(this.props.streams);
+        return (
+            <List component="nav" className="streams-list">
+                {list}
+            </List>
+        );
+        }
+    function Sidebar(props) {
         return (
             <nav>
                 <div className="sidebar">
                     <div className="profile">
-                        <Profile name={this.props.name} />
+                        <Profile name={props.name} />
                     </div>
                     <div className="streams-list-wrapper">
-                        <List component="nav" className="streams-list">
-                            {streamsList}
-                        </List>
+                        <StreamsList streams={props.streams}/>
                     </div>   
                 </div>    
             </nav>    
         )         
     }    
-}    
 
-class Home extends React.Component {
+
+// these functions must go in the Hamburger button in the top bar
+// and sidebar must be exported
+class Hamburger extends React.Component {
     constructor(props){
        super(props);
        this.state = {
@@ -67,7 +68,6 @@ class Home extends React.Component {
                 open: false,
             });
         }
-        
      }
 
     render() {
@@ -82,4 +82,4 @@ class Home extends React.Component {
 	} 
 }
 
-export default Home;
+export default Hamburger;
