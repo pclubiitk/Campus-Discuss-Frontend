@@ -2,22 +2,23 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Button from '@material-ui/core/Button';
 import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import './style.css';
 
 function Profile(props) {
     return (
-        <Button className="contained">{props.name}</Button>
+        <Button color="primary" startIcon={<AccountCircleIcon />}>{props.name}</Button>
     );
 }
 
 class StreamsList extends React.Component {
     render() {
         return (
-            <li>
-                <Button color="primary" onClick={() => alert("clicked " + this.props.streamName)}>
+                <ListItem button onClick={() => alert("clicked " + this.props.streamName)}>
                     {this.props.streamName}
-                </Button>                                                                
-            </li>
+                </ListItem>                                                                
         )
     }
 }
@@ -37,10 +38,10 @@ class Sidebar extends React.Component {
                     <div className="profile">
                         <Profile name={this.props.name} />
                     </div>
-                    <div className="streams-list">
-                        <ul className="sidenav" style={{listStyleType: "none"}}>
+                    <div className="streams-list-wrapper">
+                        <List component="nav" className="streams-list">
                             {streamsList}
-                        </ul>
+                        </List>
                     </div>   
                 </div>    
             </nav>    
@@ -66,7 +67,7 @@ class Home extends React.Component {
        <div>
            <Button onClick={() => this.toggleSidebar(true)}>Hamburger</Button>
            <Drawer anchor = "left" open = {this.state.open} onClose= {() => this.toggleSidebar(false)}>
-             <Sidebar name="John Doe" streams={["Stream1", "Stream Two"]}/>
+             <Sidebar name={this.props.name} streams={this.props.streams}/>
            </Drawer>
         </div> 
          )

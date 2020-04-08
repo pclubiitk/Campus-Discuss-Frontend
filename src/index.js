@@ -5,9 +5,11 @@ import App from './App';
 import Home from './components/sidebar/index'
 import * as serviceWorker from './serviceWorker';
 
+const name = "John Doe";
+const streams = ["Stream1", "Stream Two", "This Is A Long Stream Name", "And It Goes Like This"];
 ReactDOM.render(
   <React.StrictMode>
-    <Home name="John Doe" streams={["Stream1", "Stream Two"]} />
+    <Home name={name} streams={streams} />
   </React.StrictMode>,
   document.getElementById('root')
 );
