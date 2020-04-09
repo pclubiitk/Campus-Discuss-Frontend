@@ -1,89 +1,148 @@
-import React from "react";
-import { useState } from "react";
-import { Button } from "@material-ui/core";
-import "./style.css";
-import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Tooltip from "@material-ui/core/Tooltip";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Avatar from "@material-ui/core/Avatar";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import { red, orange, purple, pink, green } from "@material-ui/core/colors";
+import ReplyIcon from "@material-ui/icons/Reply";
+import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
-import AccountCircleTwoToneIcon from "@material-ui/icons/AccountCircleTwoTone";
-import Box from "@material-ui/core/Box";
+import "./style.css";
 
-function Comment(props) {
-  const [tds, setTds] = useState("inherit");
-  const [tus, setTus] = useState("inherit");
-  const [tuc, setTuc] = useState(0);
-  const [tdc, setTdc] = useState(0);
+var flag = 0,
+  bgcolor;
 
-  function handleClick() {
-    console.log("Click happened");
+const useStyles = makeStyles((theme) => ({
+  main: {
+    maxWidth: 400,
+  },
+  media: {
+    height: 0,
+    paddingTop: "56.25%",
+  },
+  content: {
+    border: "black",
+  },
+}));
+
+export default function CommentCard(props) {
+  const classes = useStyles();
+  const [upState, setUpState] = useState("inherit");
+  const [downState, setDownState] = useState("inherit");
+  const [upCount, setUpCount] = useState(0);
+  const [downCount, setDownCount] = useState(0);
+
+  const handleAvatar = () => {
+    switch (Math.floor(Math.random() * 5 + 1)) {
+      case 1:
+        bgcolor = green[500];
+        break;
+      case 2:
+        bgcolor = pink[500];
+        break;
+      case 3:
+        bgcolor = purple[500];
+        break;
+      case 4:
+        bgcolor = red[500];
+        break;
+      default:
+        bgcolor = orange[500];
+    }
+  };
+
+  if (flag === 0) {
+    handleAvatar();
+    flag = 1;
   }
 
-  return (
-    <div>
-      <div className="author-details">
-        <Box m={0} p={0.6}>
-          <AccountCircleTwoToneIcon fontSize="large" color="primary" />
-        </Box>
-        Bill Joy{props.author}
-      </div>
-      <div className="com-text">
-        {props.text}Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-        do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-        ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-        aliquip
-      </div>
-      <div className="menu">
-        <Box m={0.5} p={0.8}>
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            onClick={handleClick()}
-          >
-            Reply
-          </Button>
-        </Box>
+  const addReply = () => {
+    console.log("Clicked");
+  };
 
-        <Box m={0.1} p={0.8}>
-          <Button
-            onClick={() => {
-              if (tds == "inherit") {
-                setTdc(tdc + 1);
-                setTds("primary");
-                if (tus == "primary") {
-                  setTus("inherit");
-                  setTuc(tuc - 1);
-                }
-              } else {
-                setTds("inherit");
-                setTdc(tdc - 1);
-              }
-            }}
-          >
-            <ThumbDownIcon fontSize="medium" color={tds} /> <b>{tdc}</b>
-          </Button>
-        </Box>
-        <Box m={0.1} p={0.8}>
-          <Button
-            onClick={() => {
-              if (tus == "inherit") {
-                setTuc(tuc + 1);
-                setTus("primary");
-                if (tds == "primary") {
-                  setTds("inherit");
-                  setTdc(tdc - 1);
-                }
-              } else {
-                setTus("inherit");
-                setTuc(tuc - 1);
-              }
-            }}
-          >
-            <ThumbUpAltIcon fontSize="medium" color={tus} /> <b>{tuc}</b>
-          </Button>
-        </Box>
-      </div>
-    </div>
+  const handleUpvote = () => {
+    if (upState === "inherit") {
+      setUpCount(upCount + 1);
+      setUpState("primary");
+      if (downState === "primary") {
+        setDownCount(downCount - 1);
+        setDownState("inherit");
+      }
+    } else {
+      setUpCount(upCount - 1);
+      setUpState("inherit");
+    }
+  };
+
+  const handleDownvote = () => {
+    if (downState === "inherit") {
+      setDownCount(downCount + 1);
+      setDownState("primary");
+      if (upState === "primary") {
+        setUpCount(upCount - 1);
+        setUpState("inherit");
+      }
+    } else {
+      setDownCount(downCount - 1);
+      setDownState("inherit");
+    }
+  };
+
+  return (
+    <React.Fragment>
+      <Card className={classes.main}>
+        <div className="header">
+          <CardHeader
+            avatar={
+              <Avatar aria-label="comment" style={{ backgroundColor: bgcolor }}>
+                {props.author}
+              </Avatar>
+            }
+            title={<b>{props.author}Kartikeya Gupta</b>}
+            subheader="9 April, 2020"
+          />
+        </div>
+        <div className="content">
+          <CardContent className={classes.content}>
+            <Typography variant="body1" color="textPrimary" component="p">
+              {props.text} Lorem ipsum dolor sit amet, consectetur adipiscing
+              elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+              aliqua.
+            </Typography>
+          </CardContent>
+        </div>
+        <CardActions disableSpacing>
+          <Typography variant="body1" color="textSecondary" component="p">
+            <b>{upCount}</b>
+          </Typography>
+          <Tooltip title="Upvote" aria-label="upvote">
+            <IconButton aria-label="upvote" onClick={handleUpvote}>
+              <ThumbUpIcon color={upState} />
+            </IconButton>
+          </Tooltip>
+
+          <Typography variant="body1" color="textSecondary" component="p">
+            <b>{downCount}</b>
+          </Typography>
+          <Tooltip title="Downvote" aria-label="downvote">
+            <IconButton aria-label="downvote" onClick={handleDownvote}>
+              <ThumbDownIcon color={downState} />
+            </IconButton>
+          </Tooltip>
+          <div className="actions">
+            <Tooltip aria-label="reply" title="Reply">
+              <IconButton aria-label="reply" onClick={addReply}>
+                <ReplyIcon className={classes.reply} fontSize="large" />
+              </IconButton>
+            </Tooltip>
+          </div>
+        </CardActions>
+      </Card>
+    </React.Fragment>
   );
 }
-
-export default Comment;
