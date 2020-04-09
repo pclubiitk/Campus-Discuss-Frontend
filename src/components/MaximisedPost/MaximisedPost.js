@@ -7,7 +7,8 @@ import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import { red, blue } from "@material-ui/core/colors";
-const UseStyles = makeStyles((theme) => ({
+
+const useStyles = makeStyles((theme) => ({
   card: {
     width: "100%",
     backgroundColor: "white",
@@ -24,14 +25,13 @@ const UseStyles = makeStyles((theme) => ({
   subheader: {
     color: "white",
   },
-
   img: {
     height: 500,
   },
 }));
 
-export default function Maxmised(props) {
-  const classes = UseStyles();
+export default function MaximisedPost(props) {
+  const classes = useStyles();
 
   return (
     <Card className={classes.card}>
