@@ -34,6 +34,7 @@ export default function CommentCard(props) {
   const classes = useStyles();
   const [upState, setUpState] = useState("inherit");
   const [downState, setDownState] = useState("inherit");
+  const [vote, setVote] = useState(props.userVoted);
   const [upCount, setUpCount] = useState(0);
   const [downCount, setDownCount] = useState(0);
 
@@ -66,29 +67,29 @@ export default function CommentCard(props) {
   };
 
   const handleUpvote = () => {
-    if (upState === "inherit") {
-      setUpCount(upCount + 1);
+    if (vote < 1) {
+      setVote(1);
+      setUpCount(1);
       setUpState("primary");
-      if (downState === "primary") {
-        setDownCount(downCount - 1);
-        setDownState("inherit");
-      }
+      setDownCount(0);
+      setDownState("inherit");
     } else {
-      setUpCount(upCount - 1);
+      setVote(0);
+      setUpCount(0);
       setUpState("inherit");
     }
   };
 
   const handleDownvote = () => {
-    if (downState === "inherit") {
-      setDownCount(downCount + 1);
+    if (vote >= 0) {
+      setVote(-1);
+      setUpCount(0);
+      setUpState("inherit");
+      setDownCount(1);
       setDownState("primary");
-      if (upState === "primary") {
-        setUpCount(upCount - 1);
-        setUpState("inherit");
-      }
     } else {
-      setDownCount(downCount - 1);
+      setVote(0);
+      setDownCount(0);
       setDownState("inherit");
     }
   };
@@ -104,7 +105,7 @@ export default function CommentCard(props) {
               </Avatar>
             }
             title={<b>{props.author}Kartikeya Gupta</b>}
-            subheader="9 April, 2020"
+            subheader={<i>{props.date}9 April, 2020</i>}
           />
         </div>
         <div className="content">
