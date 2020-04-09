@@ -1,35 +1,13 @@
-.author-details {
-  font-size: 20px;
-  font-style: bold;
-  color: #4c4aeee8;
-  border-bottom: 25px;
-  font-family: sans-serif;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 50px;
+.header {
+  border: black 10px;
+  background-color: rgb(236, 240, 241);
+  box-shadow: cadetblue;
 }
 
-.menu {
+.content {
+  border: black 10px;
+}
+
+.actions {
   margin-left: 200px;
-  display: flex;
-  max-width: 250px;
-  flex-direction: row-reverse;
-}
-
-.thumbs {
-  font-size: medium;
-}
-
-.com-text {
-  font-size: 16px;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  height: auto;
-  width: 400px;
-  border: 1px solid black;
-  border-radius: 5px;
-  margin: 0px 40px;
-  padding: 0;
-  text-shadow: black;
 }
