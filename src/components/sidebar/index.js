@@ -4,7 +4,7 @@ import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 import "./style.css";
 
 function Profile(props) {
@@ -25,7 +25,9 @@ function StreamItem(props) {
 }
 
 function StreamsList(props) {
-  const list = props.streams.map(stream => <StreamItem streamName={stream} />);
+  const list = props.streams.map((stream) => (
+    <StreamItem streamName={stream} />
+  ));
   return (
     <List component="nav" className="streams-list">
       {list}
@@ -36,32 +38,17 @@ function StreamsList(props) {
 function Sidebar(props) {
   return (
     <nav>
-      <div className="sidebar">
-        <div className="AppName" class = "Appname">
-          CAMPUS DISCUSS
-        </div>
-        <hr></hr><hr></hr>
+      <Drawer variant="permanent" anchor="left" width="100%">
+        <div class="appName">Campus Discuss</div>
         <div className="streams-list-wrapper">
           <StreamsList streams={props.streams} />
         </div>
-        <div className = "profile"  class = "absolute" >
-          <Profile name = {props.name} /> 
+        <div className="profile">
+          <Profile name={props.name} />
         </div>
-      </div>
+      </Drawer>
     </nav>
   );
 }
 
-// these functions must go in the Hamburger button in the top bar
-// and sidebar must be exported
-function Hamburger(props) {
- return (
-    <div>
-      <Drawer variant = "permanent" anchor = "left"> 
-        <Sidebar name={props.name} streams={props.streams} />
-      </Drawer>
-    </div>
-  );
-}
-
-export default Hamburger;
+export default Sidebar;
