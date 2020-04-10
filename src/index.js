@@ -3,10 +3,19 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import Home from "./components/sidebar";
 
+const name = 'John Doe';
+const streams = [
+    "Stream1",
+    "Stream Two",
+    "This stream is long, sidebar adjusts accordingly",
+    "That Stream",
+];
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Home name = {name}
+      streams= {streams} />
   </React.StrictMode>,
   document.getElementById("root")
 );

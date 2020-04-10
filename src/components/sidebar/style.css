@@ -1,0 +1,16 @@
+.absolute {
+  position: absolute;
+  bottom: 0;
+  width: 40%;
+  height: 50px;
+  border: 3px solid #8AC007;
+  text-align: center;
+}
+.Appname {
+  text-align: center;
+  font-weight: bold;
+  font-size: 30px;
+}
+.lengthofsidebar {
+  width: 250px; 
+}

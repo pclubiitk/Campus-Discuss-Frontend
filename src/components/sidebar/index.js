@@ -4,6 +4,7 @@ import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import { makeStyles } from '@material-ui/core/styles';
 import "./style.css";
 
 function Profile(props) {
@@ -36,11 +37,15 @@ function Sidebar(props) {
   return (
     <nav>
       <div className="sidebar">
-        <div className="profile">
-          <Profile name={props.name} />
+        <div className="AppName" class = "Appname">
+          CAMPUS DISCUSS
         </div>
+        <hr></hr><hr></hr>
         <div className="streams-list-wrapper">
           <StreamsList streams={props.streams} />
+        </div>
+        <div className = "profile"  class = "absolute" >
+          <Profile name = {props.name} /> 
         </div>
       </div>
     </nav>
@@ -50,12 +55,9 @@ function Sidebar(props) {
 // these functions must go in the Hamburger button in the top bar
 // and sidebar must be exported
 function Hamburger(props) {
-  const [open, setOpen] = useState(false);
-
-  return (
+ return (
     <div>
-      <Button onClick={() => setOpen(true)}>Hamburger</Button>
-      <Drawer anchor="left" open={open} onClose={() => setOpen(false)}>
+      <Drawer variant = "permanent" anchor = "left"> 
         <Sidebar name={props.name} streams={props.streams} />
       </Drawer>
     </div>
