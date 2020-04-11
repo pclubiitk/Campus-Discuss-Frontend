@@ -39,7 +39,7 @@ function Sidebar(props) {
   return (
     <nav>
       <Drawer variant="permanent" anchor="left" width="100%">
-        <div class="app-name">Campus Discuss</div>
+        <div class="appName">Campus Discuss</div>
         <div className="streams-list-wrapper">
           <StreamsList streams={props.streams} />
         </div>

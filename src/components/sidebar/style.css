@@ -1,4 +1,3 @@
-  
 .profile {
   position: absolute;
   bottom: 0px;
@@ -6,14 +5,9 @@
   height: 50px;
   text-align: right;
 }
-.app-name {
+.appName {
   text-align: center;
   font-size: 28px;
   background-color: rgba(45, 51, 115, 0.1);
   padding: 10px;
-}
-.streams-list {
-  word-break: break-word;
-  width: 225px;
-  white-space: normal;
 }
