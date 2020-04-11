@@ -21,10 +21,10 @@ function MinimizedPost(props) {
     <Card className={classes.card} variant="outlined">
       <CardActionArea>
         <CardContent>
-          <Typography align="center" variant="h5" color="inherit" gutterBottom>
+          <Typography variant="h5" color="inherit" gutterBottom>
             <b>{props.postTitle}</b>
           </Typography>
-          <Typography align="center" variant="body1" color="textSecondary">
+          <Typography variant="body1" color="textSecondary">
             by <b>{props.postAuthor}</b>
           </Typography>
         </CardContent>
