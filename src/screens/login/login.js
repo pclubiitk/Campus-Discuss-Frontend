@@ -47,15 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignInSide() {
-  const classes = useStyles();
-  const [rememberMe, onRemember] = useState(false);
-
-  function onLogin() {
-    return window.alert("SIGNED IN SUCCESSFULLY");
-  }
-
-  function Copyright() {
+function Copyright() {
     return (
       <Typography variant="body2" color="textSecondary" align="center">
         {"Copyright © "}
@@ -68,6 +60,14 @@ export default function SignInSide() {
     );
   }
 
+export default function SignInSide() {
+  const classes = useStyles();
+  const [rememberMe, onRemember] = useState(false);
+
+  function onLogin() {
+    return window.alert("SIGNED IN SUCCESSFULLY");
+  }
+  
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
