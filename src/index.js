@@ -2,19 +2,21 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
+import Comment from "./components/comment/index";
 import * as serviceWorker from "./serviceWorker";
-import Home from "./components/sidebar";
 
-const name = "John Doe";
-const streams = [
-  "Stream1",
-  "Stream Two",
-  "This is a long stream name",
-  "That Stream",
-];
+const text =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 ReactDOM.render(
   <React.StrictMode>
-    <Home name={name} streams={streams} />
+    <Comment
+      author={"John Doe"}
+      text={text}
+      baseUpvotes={5}
+      baseDownvotes={7}
+      date={"06/08/20"}
+      userVoted={1}
+    />
   </React.StrictMode>,
   document.getElementById("root")
 );
