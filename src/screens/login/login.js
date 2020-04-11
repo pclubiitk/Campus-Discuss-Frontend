@@ -12,22 +12,6 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://pclub.in">
-        Programming Club IIT Kanpur
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
-function onLogin() {
-  return window.alert("SIGNED IN SUCCESSFULLY");
-}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,9 +48,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignInSide() {
+  const classes = useStyles();
   const [rememberMe, onRemember] = useState(false);
 
-  const classes = useStyles();
+  function onLogin() {
+    return window.alert("SIGNED IN SUCCESSFULLY");
+  }
+
+  function Copyright() {
+    return (
+      <Typography variant="body2" color="textSecondary" align="center">
+        {"Copyright © "}
+        <Link color="inherit" href="https://pclub.in">
+          Programming Club IIT Kanpur
+        </Link>{" "}
+        {new Date().getFullYear()}
+        {"."}
+      </Typography>
+    );
+  }
 
   return (
     <Grid container component="main" className={classes.root}>
