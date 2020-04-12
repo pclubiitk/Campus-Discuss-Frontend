@@ -1,5 +1,5 @@
 import React from "react";
-import MinimizedPost from "./minimizedpost";
+import MinimizedPost from "../MinimizedPost/index";
 
 export default function StreamScreen(props) {
   var posts = [];
