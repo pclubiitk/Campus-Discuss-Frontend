@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Environment protection",
+    "description": " Objectives are to conserve natural resources and the existing natural environment and, where possible, to repair damage and reverse trends",
+    "followers": 303
+  },
+  {
+    "id": 2,
+    "title": "Feminism",
+    "description": "Aim to define, establish, and achieve the political, economic, personal, and social equality of the sexes",
+    "followers": 260
+  },
+  {
+    "id": 3,
+    "title": "Veganism",
+    "description": "Practice of abstaining from the use of animal products, particularly in diet, and an associated philosophy that rejects the commodity status of animals",
+    "followers": 165
+  },
+  {
+    "id": 4,
+    "title": "Hollywood Gossip",
+    "description": "Celebrity gossip blog with the latest entertainment news, scandals, fashion, hairstyles, pictures, and videos of your favorite celebrities",
+    "followers": 79
+  }
+]
