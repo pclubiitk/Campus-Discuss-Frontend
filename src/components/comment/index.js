@@ -25,7 +25,7 @@ import "./style.css";
 const useStyles = makeStyles((theme) => ({
   main: {
     margin: 10,
-    border: "1px solid #dddf",
+    border: '1px solid #dddf',
   },
 }));
 
@@ -93,7 +93,7 @@ const Comment = (props) => {
       <CardActions disableSpacing>
         <Tooltip title="Upvote" aria-label="upvote">
           <IconButton aria-label="upvote" onClick={onUpvote}>
-            <ThumbUpIcon color={vote === 1 ? "primary" : "inherit"} />
+            <ThumbUpIcon color={vote === 1 ? 'primary' : 'inherit'} />
           </IconButton>
         </Tooltip>
         <Typography variant="body2" color="textSecondary" component="p">
@@ -101,7 +101,7 @@ const Comment = (props) => {
         </Typography>
         <Tooltip title="Downvote" aria-label="downvote">
           <IconButton aria-label="downvote" onClick={onDownvote}>
-            <ThumbDownIcon color={vote === -1 ? "primary" : "inherit"} />
+            <ThumbDownIcon color={vote === -1 ? 'primary' : 'inherit'} />
           </IconButton>
         </Tooltip>
         <Typography variant="body1" color="textSecondary" component="p">
