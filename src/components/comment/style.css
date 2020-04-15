@@ -5,3 +5,17 @@
 .actions {
   margin-left: auto;
 }
+#replyalign {
+  margin-right: 20px;
+}
+#cancelAlign {
+  margin-right: 20px;
+}
+#text-box-container {
+  margin-left: 10px;
+  margin-right: 10p;
+}
+#text-box {
+  padding-left: 10px;
+  padding-right: 10px;
+}
