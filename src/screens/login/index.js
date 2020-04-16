@@ -48,17 +48,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Copyright() {
-    return (
-      <Typography variant="body2" color="textSecondary" align="center">
-        {"Copyright © "}
-        <Link color="inherit" href="https://pclub.in">
-          Programming Club IIT Kanpur
-        </Link>{" "}
-        {new Date().getFullYear()}
-        {"."}
-      </Typography>
-    );
-  }
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Copyright © "}
+      <Link color="inherit" href="https://pclub.in">
+        Programming Club IIT Kanpur
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
 
 export default function SignInSide() {
   const classes = useStyles();
@@ -67,7 +67,7 @@ export default function SignInSide() {
   function onLogin() {
     return window.alert("SIGNED IN SUCCESSFULLY");
   }
-  
+
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
