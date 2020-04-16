@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -57,67 +57,57 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-var fileArray = [];
+function MultipleImageUploadComponent(props) {
+  var fileObj = [];
+  const [fileArray, setArray] = useState([]);
 
-class MultipleImageUploadComponent extends Component {
-  fileObj = [];
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      file: [null],
-    };
-    this.uploadMultipleFiles = this.uploadMultipleFiles.bind(this);
-  }
-
-  uploadMultipleFiles(e) {
-    this.fileObj.push(e.target.files);
-    for (let i = 0; i < this.fileObj[0].length; i++) {
-      fileArray.push(URL.createObjectURL(this.fileObj[0][i]));
+  const uploadMultipleFiles = (e) => {
+    fileObj.push(e.target.files);
+    for (let i = 0; i < fileObj[0].length; i++) {
+      props.files.push(URL.createObjectURL(fileObj[0][i]));
     }
-    this.setState({ file: fileArray });
-  }
+    setArray(props.files);
+  };
 
-  uploadFiles(e) {
+  const uploadFiles = (e) => {
     e.preventDefault();
-    console.log(this.state.file);
-  }
+    console.log(fileArray);
+  };
 
-  render() {
-    return (
-      <form>
-        <div className="form-group multi-preview">
-          {(fileArray || []).map((url) => (
-            <img src={url} alt="..." width="200" height="100" />
-          ))}
-        </div>
+  return (
+    <form>
+      <div className="form-group multi-preview">
+        {(fileArray || []).map((url) => (
+          <img src={url} alt="..." width="200" height="100" />
+        ))}
+      </div>
 
-        <div className="form-group">
-          <input
-            type="file"
-            onChange={this.uploadMultipleFiles}
-            multiple
-            style={{ display: "none" }}
-            id="upload-button"
-          />
-          <label htmlFor="upload-button">
-            <Button
-              variant="contained"
-              color="primary"
-              component="span"
-              startIcon={<CloudUploadIcon />}
-            >
-              Upload
-            </Button>
-          </label>
-        </div>
-      </form>
-    );
-  }
+      <div className="form-group">
+        <input
+          type="file"
+          onChange={uploadMultipleFiles}
+          multiple
+          style={{ display: "none" }}
+          id="upload-button"
+        />
+        <label htmlFor="upload-button">
+          <Button
+            variant="contained"
+            color="primary"
+            component="span"
+            startIcon={<CloudUploadIcon />}
+          >
+            Upload
+          </Button>
+        </label>
+      </div>
+    </form>
+  );
 }
 
 export default function Maxmised(props) {
   const classes = useStyles();
+  var imgarr = [];
 
   return (
     <Card className={classes.card}>
@@ -161,7 +151,7 @@ export default function Maxmised(props) {
               />
             </div>
             <div className={classes.root}>
-              <MultipleImageUploadComponent />
+              <MultipleImageUploadComponent files={imgarr} />
             </div>
             <div>
               <Button
@@ -173,7 +163,7 @@ export default function Maxmised(props) {
                   props.onSubmit(
                     document.getElementById("post-title").value,
                     document.getElementById("post-content").value,
-                    fileArray
+                    imgarr
                   );
                 }}
               >
