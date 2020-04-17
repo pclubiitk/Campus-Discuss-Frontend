@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import clsx from "clsx";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
 import {
@@ -54,8 +53,8 @@ const Profile = (props) => {
   const classes = useStyles();
 
   const [values, setValues] = useState({
-    firstName: props.firstName,
-    lastName: props.lastName,
+    name: props.name,
+    userName: props.userName,
     email: props.mail,
     fblink: props.fbLink,
     followers: props.followers,
@@ -223,7 +222,7 @@ const Profile = (props) => {
           </Grid>
 
           <Grid item md={6} xs={12} xl={8} lg={8}>
-            <Card {...rest} className={clsx(classes.root, className)}>
+            <Card {...rest}>
               <form autoComplete="off" noValidate>
                 <CardHeader
                   subheader="The information can be edited"
@@ -235,32 +234,30 @@ const Profile = (props) => {
                     <Grid item md={6} xs={12}>
                       <TextField
                         fullWidth
-                        helperText="Please specify the first name"
-                        label="First name"
+                        label="Name"
                         margin="dense"
-                        name="firstName"
-                        onChange={handleChange}
-                        required
-                        value={values.firstName}
+                        name="name"
+                        value={values.name}
                         variant="outlined"
+                        disabled
                       />
                     </Grid>
                     <Grid item md={6} xs={12}>
                       <TextField
                         fullWidth
-                        label="Last name"
+                        label="Username"
                         margin="dense"
-                        name="lastName"
-                        onChange={handleChange}
-                        required
-                        value={values.lastName}
+                        name="userName"
+                        value={values.userName}
                         variant="outlined"
+                        disabled
                       />
                     </Grid>
                     <Grid item md={6} xs={12}>
                       <TextField
                         fullWidth
                         label="IITK Email Address"
+                        helperText="Please specify your IITK mail ID"
                         margin="dense"
                         name="email"
                         onChange={handleChange}
@@ -275,6 +272,7 @@ const Profile = (props) => {
                         label="Facebook ID"
                         margin="dense"
                         name="fblink"
+                        helperText="e.g.https://www.facebook.com/kartikeya.gupta.750 "
                         onChange={handleChange}
                         required
                         type="url"
@@ -282,6 +280,7 @@ const Profile = (props) => {
                         variant="outlined"
                       />
                     </Grid>
+
                     <Grid item md={6} xs={12}>
                       <TextField
                         fullWidth
@@ -302,17 +301,6 @@ const Profile = (props) => {
                           </option>
                         ))}
                       </TextField>
-                    </Grid>
-                    <Grid item md={6} xs={12}>
-                      <TextField
-                        fullWidth
-                        label="Nickname"
-                        margin="dense"
-                        name="nickname"
-                        onChange={handleChange}
-                        value={values.nickname}
-                        variant="outlined"
-                      />
                     </Grid>
                   </Grid>
                 </CardContent>
