@@ -15,6 +15,7 @@ import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import Icon from "@material-ui/core/Icon";
 import SendIcon from "@material-ui/icons/Send";
+import { DropzoneDialog } from "material-ui-dropzone";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -57,57 +58,63 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MultipleImageUploadComponent(props) {
-  var fileObj = [];
-  const [fileArray, setArray] = useState([]);
+function DropzoneDialogExample(props) {
+  const [open, setOpen] = useState(false);
+  const [files, setFiles] = useState([]);
 
-  const uploadMultipleFiles = (e) => {
-    fileObj.push(e.target.files);
-    for (let i = 0; i < fileObj[0].length; i++) {
-      props.files.push(URL.createObjectURL(fileObj[0][i]));
-    }
-    setArray(props.files);
+  const handleClose = () => {
+    setOpen(false);
   };
 
-  const uploadFiles = (e) => {
-    e.preventDefault();
-    console.log(fileArray);
+  const handleSave = (files) => {
+    setFiles(files);
+    setOpen(false);
+    if (files) {
+      files.forEach((file) => {
+        var objectURL = URL.createObjectURL(file);
+        props.filearray.push(objectURL);
+      });
+    }
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+    props.filearray.length = 0;
   };
 
   return (
-    <form>
+    <div>
       <div className="form-group multi-preview">
-        {(fileArray || []).map((url) => (
-          <img src={url} alt="..." width="200" height="100" />
+        {(props.filearray || []).map((url) => (
+          <img src={url} alt="..." width="200" height="100" border="3" />
         ))}
       </div>
-
-      <div className="form-group">
-        <input
-          type="file"
-          onChange={uploadMultipleFiles}
-          multiple
-          style={{ display: "none" }}
-          id="upload-button"
-        />
-        <label htmlFor="upload-button">
-          <Button
-            variant="contained"
-            color="primary"
-            component="span"
-            startIcon={<CloudUploadIcon />}
-          >
-            Upload
-          </Button>
-        </label>
-      </div>
-    </form>
+      <Button
+        variant="contained"
+        color="primary"
+        component="span"
+        startIcon={<CloudUploadIcon />}
+        onClick={handleOpen}
+      >
+        Upload Images
+      </Button>
+      <DropzoneDialog
+        open={open}
+        onSave={handleSave}
+        acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
+        showPreviews={true}
+        maxFileSize={5000000}
+        onClose={handleClose}
+      />
+    </div>
   );
 }
 
 export default function Maxmised(props) {
   const classes = useStyles();
   var imgarr = [];
+  const [text1, setText1] = useState(false);
+  const [text2, setText2] = useState(false);
 
   return (
     <Card className={classes.card}>
@@ -137,6 +144,7 @@ export default function Maxmised(props) {
                 placeholder="Your Title"
                 variant="outlined"
                 fullWidth
+                error={text1}
               />
             </div>
             <div>
@@ -148,10 +156,11 @@ export default function Maxmised(props) {
                 multiline
                 rows="12"
                 variant="outlined"
+                error={text2}
               />
             </div>
             <div className={classes.root}>
-              <MultipleImageUploadComponent files={imgarr} />
+              <DropzoneDialogExample filearray={imgarr} />
             </div>
             <div>
               <Button
@@ -160,11 +169,26 @@ export default function Maxmised(props) {
                 className={classes.button}
                 endIcon={<SendIcon />}
                 onClick={() => {
-                  props.onSubmit(
-                    document.getElementById("post-title").value,
-                    document.getElementById("post-content").value,
-                    imgarr
-                  );
+                  if (document.getElementById("post-title").value === "")
+                    setText1(true);
+                  else setText1(false);
+                  if (document.getElementById("post-content").value === "")
+                    setText2(true);
+                  else setText2(false);
+                  if (
+                    !(
+                      document.getElementById("post-title").value === "" ||
+                      document.getElementById("post-content").value === ""
+                    )
+                  ) {
+                    setText1(false);
+                    setText2(false);
+                    props.onSubmit(
+                      document.getElementById("post-title").value,
+                      document.getElementById("post-content").value,
+                      imgarr
+                    );
+                  }
                 }}
               >
                 Submit
