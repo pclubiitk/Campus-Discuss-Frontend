@@ -44,8 +44,6 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-var count = 0;
-
 const Profile = (props) => {
   const { className, ...rest } = props;
   const dpInput = React.createRef();
@@ -59,23 +57,26 @@ const Profile = (props) => {
     fblink: props.fbLink,
     followers: props.followers,
     following: props.following,
-    nickname: props.nickname,
     hall: props.hall,
   });
   document.body.style = "background:#f5f5ef ; margin-bottom: 60px;";
 
   //Handle change in text fields and update profile completeness
+
+  const [completenessIndex, setCompletenessIndex] = useState(0);
+
   const handleChange = (event) => {
     setValues({
       ...values,
       [event.target.name]: event.target.value,
     });
-    count = 0;
+    var count = 0;
     for (var key in values) {
       if (values[key]) {
         count++;
       }
     }
+    setCompletenessIndex(parseInt((count * 100) / 6));
   };
 
   //Defined functions for Profile Image upload
@@ -185,10 +186,10 @@ const Profile = (props) => {
                 </div>
                 <div className={classes.progress}>
                   <Typography variant="body1">
-                    Profile Completeness: {parseInt((count * 100) / 6)}%
+                    Profile Completeness: {completenessIndex}%
                   </Typography>
                   <LinearProgress
-                    value={(count / 6) * 100}
+                    value={completenessIndex}
                     variant="determinate"
                   />
                 </div>
