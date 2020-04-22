@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -111,6 +111,8 @@ function DropzoneDialogExample(props) {
 }
 
 export default function Maxmised(props) {
+  const inputEl1 = useRef(null);
+  const inputEl2 = useRef(null);
   const classes = useStyles();
   var imgarr = [];
   const [text1, setText1] = useState(false);
@@ -145,6 +147,7 @@ export default function Maxmised(props) {
                 variant="outlined"
                 fullWidth
                 error={text1}
+                inputRef={inputEl1}
               />
             </div>
             <div>
@@ -157,6 +160,7 @@ export default function Maxmised(props) {
                 rows="12"
                 variant="outlined"
                 error={text2}
+                inputRef={inputEl2}
               />
             </div>
             <div className={classes.root}>
@@ -169,23 +173,21 @@ export default function Maxmised(props) {
                 className={classes.button}
                 endIcon={<SendIcon />}
                 onClick={() => {
-                  if (document.getElementById("post-title").value === "")
-                    setText1(true);
+                  if (inputEl1.current.value === "") setText1(true);
                   else setText1(false);
-                  if (document.getElementById("post-content").value === "")
-                    setText2(true);
+                  if (inputEl2.current.value === "") setText2(true);
                   else setText2(false);
                   if (
                     !(
-                      document.getElementById("post-title").value === "" ||
-                      document.getElementById("post-content").value === ""
+                      inputEl1.current.value === "" ||
+                      inputEl2.current.value === ""
                     )
                   ) {
                     setText1(false);
                     setText2(false);
                     props.onSubmit(
-                      document.getElementById("post-title").value,
-                      document.getElementById("post-content").value,
+                      inputEl1.current.value,
+                      inputEl2.current.value,
                       imgarr
                     );
                   }
