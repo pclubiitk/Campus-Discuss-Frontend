@@ -1,25 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+
+import Mainframe from "./Mainframe";
+import Login from "./screens/login";
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  function PrivateRoute(props) {
+    return (
+      <Route
+        path={props.path}
+        render={() =>
+          isAuthenticated ? <props.component /> : <Redirect to="/login" />
+        }
+      />
+    );
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/login" component={Login} />
+        <PrivateRoute path="/" component={Mainframe} />
+      </Switch>
+    </BrowserRouter>
   );
 }
 
