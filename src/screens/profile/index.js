@@ -59,7 +59,7 @@ const Profile = (props) => {
     following: props.following,
     hall: props.hall,
   });
-  document.body.style = "background:#f5f5ef ; margin-bottom: 60px;";
+  document.body.style = "background:#f5f5ef ;";
 
   //Handle change in text fields and update profile completeness
 
