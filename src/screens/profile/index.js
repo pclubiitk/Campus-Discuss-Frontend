@@ -16,6 +16,7 @@ import {
 } from "@material-ui/core";
 import Topbar from "../../components/Topbar/index";
 import Link from "@material-ui/core/Link";
+import "./style.css";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -59,8 +60,7 @@ const Profile = (props) => {
     following: props.following,
     hall: props.hall,
   });
-  document.body.style = "background:#f5f5ef ;";
-
+ 
   //Handle change in text fields and update profile completeness
 
   const [completenessIndex, setCompletenessIndex] = useState(0);
