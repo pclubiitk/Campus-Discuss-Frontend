@@ -2,18 +2,13 @@ import React, { useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
-import { red, blue } from "@material-ui/core/colors";
 import CreateIcon from "@material-ui/icons/Create";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import Icon from "@material-ui/core/Icon";
 import SendIcon from "@material-ui/icons/Send";
 import { DropzoneDialog } from "material-ui-dropzone";
 
@@ -61,31 +56,35 @@ const useStyles = makeStyles((theme) => ({
 function DropzoneDialogExample(props) {
   const [open, setOpen] = useState(false);
   const [files, setFiles] = useState([]);
+  const [arr, setArr] = useState([]);
 
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleSave = (files) => {
+    //setArr([]);
     setFiles(files);
     setOpen(false);
     if (files) {
       files.forEach((file) => {
         var objectURL = URL.createObjectURL(file);
-        props.filearray.push(objectURL);
+        arr.push(objectURL);
+        setArr(arr);
       });
+      props.changeFile(arr);
     }
   };
 
   const handleOpen = () => {
     setOpen(true);
-    props.filearray.length = 0;
+    setArr([]);
   };
 
   return (
     <div>
       <div className="form-group multi-preview">
-        {(props.filearray || []).map((url) => (
+        {(arr || []).map((url) => (
           <img src={url} alt="..." width="200" height="100" border="3" />
         ))}
       </div>
@@ -114,9 +113,32 @@ export default function Maxmised(props) {
   const inputEl1 = useRef(null);
   const inputEl2 = useRef(null);
   const classes = useStyles();
-  var imgarr = [];
+
+  const [imgarr, setImgarr] = useState([]);
   const [text1, setText1] = useState(false);
   const [text2, setText2] = useState(false);
+  const [valid, setValid] = useState(false);
+
+  const validateandSubmit = async () => {
+    if (inputEl1.current.value === "") {
+      setText1(true);
+      setValid(false);
+    } else {
+      setText1(false);
+    }
+    if (inputEl2.current.value === "") {
+      setText2(true);
+      setValid(false);
+    } else {
+      setText2(false);
+    }
+    if (!(inputEl1.current.value === "" || inputEl2.current.value === "")) {
+      setText1(false);
+      setText2(false);
+      setValid(true);
+    }
+    return { valid };
+  };
 
   return (
     <Card className={classes.card}>
@@ -164,7 +186,7 @@ export default function Maxmised(props) {
               />
             </div>
             <div className={classes.root}>
-              <DropzoneDialogExample filearray={imgarr} />
+              <DropzoneDialogExample changeFile={setImgarr} />
             </div>
             <div>
               <Button
@@ -172,19 +194,9 @@ export default function Maxmised(props) {
                 color="primary"
                 className={classes.button}
                 endIcon={<SendIcon />}
-                onClick={() => {
-                  if (inputEl1.current.value === "") setText1(true);
-                  else setText1(false);
-                  if (inputEl2.current.value === "") setText2(true);
-                  else setText2(false);
-                  if (
-                    !(
-                      inputEl1.current.value === "" ||
-                      inputEl2.current.value === ""
-                    )
-                  ) {
-                    setText1(false);
-                    setText2(false);
+                onClick={async () => {
+                  const resp = await validateandSubmit();
+                  if (resp) {
                     props.onSubmit(
                       inputEl1.current.value,
                       inputEl2.current.value,
