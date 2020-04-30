@@ -2,24 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import Streams from "../src/screens/subscribe-streams/index";
 import * as serviceWorker from "./serviceWorker";
-
-const onSubscribe = (id) => {
-  alert("Subsribe clicked!  " + id);
-};
-const onOpen = (id) => {
-  alert("Open the stream  " + id);
-};
-const subscribed = [false, true, true, false];
 
 ReactDOM.render(
   <React.StrictMode>
-    <Streams
-      onOpen={onOpen}
-      onSubscribe={onSubscribe}
-      subscribed={subscribed}
-    />
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );
