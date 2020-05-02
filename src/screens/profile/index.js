@@ -337,7 +337,13 @@ const Profile = (props) => {
 };
 
 Profile.propTypes = {
-  className: PropTypes.string,
+    name: PropTypes.string,
+    userName: PropTypes.string,
+    email: PropTypes.string,
+    fblink: PropTypes.string,
+    followers: PropTypes.number,
+    following: PropTypes.number,
+    hall: PropTypes.number,
 };
 
 export default Profile;
