@@ -7,20 +7,49 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import "./style.css";
+import { Typography } from "@material-ui/core";
+import { indigo, grey, blueGrey } from "@material-ui/core/colors";
+
+const useStyles = makeStyles((theme) => {
+  const dark = theme.palette.type === "dark";
+  return {
+    profileName: {
+      color: dark ? grey["400"] : indigo["900"],
+    },
+    accountCircleIcon: {
+      color: dark ? indigo["400"] : indigo["900"],
+    },
+    appName: {
+      textAlign: "center",
+      fontSize: "28px",
+      padding: "10px",
+      backgroundColor: dark ? grey["700"] : indigo["700"],
+      color: dark ? indigo["50"] : indigo["50"],
+    },
+  };
+});
 
 const styles = {
   root: {
     minWidth: 40,
-    color: "black",
   },
 };
 function Profile(props) {
+  const classes = useStyles();
   // AccountCircleIcon can be replaced by Avatar when we add Profile Picture functionality
   return (
-    <Button color="primary" startIcon={<AccountCircleIcon />} fullWidth>
-      {props.name}
+    <Button
+      color="primary"
+      startIcon={
+        <Typography className={classes.accountCircleIcon}>
+          <AccountCircleIcon />
+        </Typography>
+      }
+      fullWidth
+    >
+      <Typography className={classes.profileName}>{props.name}</Typography>
     </Button>
   );
 }
@@ -52,10 +81,13 @@ function StreamsList(props) {
 }
 
 function Sidebar(props) {
+  const classes = useStyles();
   return (
     <nav>
       <Drawer variant="permanent" anchor="left" width="100%">
-        <div class="app-name">Campus Discuss</div>
+        <Typography variant="h4" className={classes.appName}>
+          Campus Discuss
+        </Typography>
         <div className="streams-list-wrapper">
           <StreamsList streams={props.streams} />
         </div>
