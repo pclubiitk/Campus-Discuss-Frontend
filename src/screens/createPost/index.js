@@ -1,10 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
 import CreateIcon from "@material-ui/icons/Create";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -63,7 +62,6 @@ function DropzoneDialogExample(props) {
   };
 
   const handleSave = (files) => {
-    //setArr([]);
     setFiles(files);
     setOpen(false);
     if (files) {
@@ -118,8 +116,13 @@ export default function Maxmised(props) {
   const [text1, setText1] = useState(false);
   const [text2, setText2] = useState(false);
   const [valid, setValid] = useState(false);
+  useEffect(() => {
+    if (valid) {
+      props.onSubmit(inputEl1.current.value, inputEl2.current.value, imgarr);
+    }
+  }, [valid]);
 
-  const validateandSubmit = async () => {
+  const validateandSubmit = () => {
     if (inputEl1.current.value === "") {
       setText1(true);
       setValid(false);
@@ -137,7 +140,6 @@ export default function Maxmised(props) {
       setText2(false);
       setValid(true);
     }
-    return { valid };
   };
 
   return (
@@ -158,58 +160,47 @@ export default function Maxmised(props) {
       />
 
       <CardContent>
-        <Typography variant="body2" color="black" component="p">
-          <form className={classes.root} noValidate autoComplete="off">
-            <div>
-              <TextField
-                required
-                id="post-title"
-                label="Post Title"
-                placeholder="Your Title"
-                variant="outlined"
-                fullWidth
-                error={text1}
-                inputRef={inputEl1}
-              />
-            </div>
-            <div>
-              <TextField
-                required
-                id="post-content"
-                label="Post Content"
-                placeholder="Your Content"
-                multiline
-                rows="12"
-                variant="outlined"
-                error={text2}
-                inputRef={inputEl2}
-              />
-            </div>
-            <div className={classes.root}>
-              <DropzoneDialogExample changeFile={setImgarr} />
-            </div>
-            <div>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                endIcon={<SendIcon />}
-                onClick={async () => {
-                  const resp = await validateandSubmit();
-                  if (resp) {
-                    props.onSubmit(
-                      inputEl1.current.value,
-                      inputEl2.current.value,
-                      imgarr
-                    );
-                  }
-                }}
-              >
-                Submit
-              </Button>
-            </div>
-          </form>
-        </Typography>
+        <form className={classes.root} noValidate autoComplete="off">
+          <div>
+            <TextField
+              required
+              id="post-title"
+              label="Post Title"
+              placeholder="Your Title"
+              variant="outlined"
+              fullWidth
+              error={text1}
+              inputRef={inputEl1}
+            />
+          </div>
+          <div>
+            <TextField
+              required
+              id="post-content"
+              label="Post Content"
+              placeholder="Your Content"
+              multiline
+              rows="12"
+              variant="outlined"
+              error={text2}
+              inputRef={inputEl2}
+            />
+          </div>
+          <div className={classes.root}>
+            <DropzoneDialogExample changeFile={setImgarr} />
+          </div>
+          <div>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              endIcon={<SendIcon />}
+              onClick={validateandSubmit}
+            >
+              Submit
+            </Button>
+          </div>
+        </form>
       </CardContent>
     </Card>
   );
