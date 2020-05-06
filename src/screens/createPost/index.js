@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -115,30 +115,26 @@ export default function Maxmised(props) {
   const [imgarr, setImgarr] = useState([]);
   const [text1, setText1] = useState(false);
   const [text2, setText2] = useState(false);
-  const [valid, setValid] = useState(false);
-  useEffect(() => {
-    if (valid) {
-      props.onSubmit(inputEl1.current.value, inputEl2.current.value, imgarr);
-    }
-  }, [valid]);
 
   const validateandSubmit = () => {
+    let formValid = false;
     if (inputEl1.current.value === "") {
       setText1(true);
-      setValid(false);
     } else {
       setText1(false);
     }
     if (inputEl2.current.value === "") {
       setText2(true);
-      setValid(false);
     } else {
       setText2(false);
     }
     if (!(inputEl1.current.value === "" || inputEl2.current.value === "")) {
       setText1(false);
       setText2(false);
-      setValid(true);
+      formValid = true;
+    }
+    if (formValid) {
+      props.onSubmit(inputEl1.current.value, inputEl2.current.value, imgarr);
     }
   };
 
