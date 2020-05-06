@@ -46,7 +46,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Profile = (props) => {
-  const { className, ...rest } = props;
+  const { ...rest } = props;
   const dpInput = React.createRef();
 
   const classes = useStyles();
