@@ -31,7 +31,14 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { red, orange, purple, pink, green } from "@material-ui/core/colors";
+import {
+  red,
+  orange,
+  purple,
+  pink,
+  green,
+  grey,
+} from "@material-ui/core/colors";
 import ReplyIcon from "@material-ui/icons/Reply";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
@@ -46,21 +53,27 @@ import { Toolbar } from "@material-ui/core";
 
 const spacing = 60; //It controls spacing between nested comments
 
-const useStyles = makeStyles((theme) => ({
-  main: {
-    margin: 10,
-    maxWidth: "80em", //max width of comment box
-  },
-  contentShown: { overflowWrap: "break-word" },
-  contentHidden: { marginLeft: "1em", flexShrink: "true" },
-  authorHidden: {
-    marginLeft: "0.5em",
-    fontWeight: "bold",
-    minWidth: "4em",
-    maxWidth: "6em",
-  },
-  indent: { marginLeft: spacing },
-}));
+const useStyles = makeStyles((theme) => {
+  const dark = theme.palette.type === "dark";
+  return {
+    main: {
+      margin: 10,
+      maxWidth: "80em", //max width of comment box
+    },
+    contentShown: { overflowWrap: "break-word" },
+    contentHidden: { marginLeft: "1em", flexShrink: "true" },
+    authorHidden: {
+      marginLeft: "0.5em",
+      fontWeight: "bold",
+      minWidth: "4em",
+      maxWidth: "6em",
+    },
+    indent: { marginLeft: spacing },
+    header: {
+      backgroundColor: dark ? grey["700"] : grey["300"],
+    },
+  };
+});
 
 // Generate random color for avatar
 const colorArray = [red, orange, purple, pink, green];
@@ -210,17 +223,16 @@ function MaximisedComment(props) {
   return (
     <Card className={classes.main}>
       {/* Comment Header */}
-      <div className="header">
-        <CardHeader
-          avatar={<AvatarProp {...props} />}
-          title={
-            <Typography noWrap>
-              <b>{props.author}</b>
-            </Typography>
-          }
-          subheader={<i>{props.date}</i>}
-        />
-      </div>
+      <CardHeader
+        avatar={<AvatarProp {...props} />}
+        title={
+          <Typography noWrap>
+            <b>{props.author}</b>
+          </Typography>
+        }
+        subheader={<i>{props.date}</i>}
+        className={classes.header}
+      />
       {/* Comment Body */}
       <CardContent>
         <Typography

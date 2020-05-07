@@ -9,7 +9,7 @@ function Mainframe(props) {
       <Route path="/profile" component={screens.Profile} />
       <Route path="/streams" component={screens.Streams} />
       <Route exact path="/stream/:id" component={screens.Stream} />
-      <Route path="/stream/:id/newpost" component={screens.NewPost} />
+      <Route path="/stream/:id/new" component={screens.CreatePost} />
       <Route render={() => <h1>404: page not found</h1>} />
     </Switch>
   );

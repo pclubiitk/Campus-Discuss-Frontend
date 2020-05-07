@@ -10,52 +10,68 @@ import Button from "@material-ui/core/Button";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import SendIcon from "@material-ui/icons/Send";
 import { DropzoneDialog } from "material-ui-dropzone";
+import { Typography } from "@material-ui/core";
+import { blueGrey, indigo, grey } from "@material-ui/core/colors";
 
-const useStyles = makeStyles((theme) => ({
-  button: {
-    margin: theme.spacing(1),
-    width: "100%",
-  },
-  card: {
-    width: "100%",
-    backgroundColor: "white",
-    textAlign: "left",
-    justifyContent: "left",
-    alignContent: "left",
-  },
-  avatar: {
-    backgroundColor: "white",
-  },
-  root: {
-    "& .MuiTextField-root": {
+const useStyles = makeStyles((theme) => {
+  const dark = theme.palette.type === "dark";
+  return {
+    outer: {
+      height: "100vh",
+      width: "100vw",
+      backgroundColor: dark ? grey["900"] : blueGrey["50"],
+      borderRadius: 0,
+    },
+    header: {
+      textAlign: "left",
+      backgroundColor: dark ? indigo["900"] : indigo["700"],
+    },
+    submitButton: {
       margin: theme.spacing(1),
       width: "100%",
+      backgroundColor: dark ? indigo["900"] : indigo["600"],
+      color: dark ? blueGrey["100"] : blueGrey["50"],
     },
-    "& > *": {
-      margin: theme.spacing(1),
+    uploadButton: {
+      backgroundColor: dark ? indigo["900"] : indigo["600"],
+      color: dark ? blueGrey["100"] : blueGrey["50"],
     },
-  },
-  input: {
-    display: "none",
-  },
-  title: {
-    fontSize: "large",
-    color: "white",
-  },
-  subheader: {
-    fontSize: "large",
-    color: "white",
-  },
+    card: {
+      width: "100%",
+      textAlign: "left",
+      justifyContent: "left",
+      alignContent: "left",
+    },
+    avatar: {
+      backgroundColor: dark ? blueGrey["100"] : blueGrey["50"],
+    },
+    root: {
+      "& .MuiTextField-root": {
+        margin: theme.spacing(1),
+        width: "100%",
+      },
+      "& > *": {
+        margin: theme.spacing(1),
+      },
+    },
+    input: {
+      display: "none",
+    },
+    title: { color: dark ? indigo["100"] : grey["50"] },
+    subheader: { color: dark ? indigo["300"] : indigo["100"] },
 
-  img: {
-    height: 500,
-  },
-}));
+    img: {
+      height: 500,
+    },
+  };
+});
 
 function DropzoneDialogExample(props) {
   const [open, setOpen] = useState(false);
   const [files, setFiles] = useState([]);
   const [arr, setArr] = useState([]);
+
+  const classes = useStyles();
 
   const handleClose = () => {
     setOpen(false);
@@ -89,6 +105,7 @@ function DropzoneDialogExample(props) {
       <Button
         variant="contained"
         color="primary"
+        className={classes.uploadButton}
         component="span"
         startIcon={<CloudUploadIcon />}
         onClick={handleOpen}
@@ -107,7 +124,7 @@ function DropzoneDialogExample(props) {
   );
 }
 
-export default function Maxmised(props) {
+export default function CreatePost(props) {
   const inputEl1 = useRef(null);
   const inputEl2 = useRef(null);
   const classes = useStyles();
@@ -139,65 +156,71 @@ export default function Maxmised(props) {
   };
 
   return (
-    <Card className={classes.card}>
-      <CardHeader
-        classes={{ title: classes.title, subheader: classes.subheader }}
-        avatar={
-          <Avatar className={classes.avatar}>
-            <CreateIcon color="primary" fontSize="medium" />
-          </Avatar>
-        }
-        title="CREATE POST"
-        subheader={props.stream}
-        style={{
-          textAlign: "left",
-          backgroundColor: "#3f51b5",
-        }}
-      />
+    <Card className={classes.outer}>
+      <Card className={classes.card}>
+        <CardHeader
+          avatar={
+            <Avatar className={classes.avatar}>
+              <CreateIcon color="primary" fontSize="medium" />
+            </Avatar>
+          }
+          title={
+            <Typography className={classes.title} variant="h5">
+              CREATE POST
+            </Typography>
+          }
+          subheader={
+            <Typography className={classes.subheader}>
+              {props.stream}
+            </Typography>
+          }
+          className={classes.header}
+        />
 
-      <CardContent>
-        <form className={classes.root} noValidate autoComplete="off">
-          <div>
-            <TextField
-              required
-              id="post-title"
-              label="Post Title"
-              placeholder="Your Title"
-              variant="outlined"
-              fullWidth
-              error={text1}
-              inputRef={inputEl1}
-            />
-          </div>
-          <div>
-            <TextField
-              required
-              id="post-content"
-              label="Post Content"
-              placeholder="Your Content"
-              multiline
-              rows="12"
-              variant="outlined"
-              error={text2}
-              inputRef={inputEl2}
-            />
-          </div>
-          <div className={classes.root}>
-            <DropzoneDialogExample changeFile={setImgarr} />
-          </div>
-          <div>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              endIcon={<SendIcon />}
-              onClick={validateandSubmit}
-            >
-              Submit
-            </Button>
-          </div>
-        </form>
-      </CardContent>
+        <CardContent>
+          <form className={classes.root} noValidate autoComplete="off">
+            <div>
+              <TextField
+                required
+                id="post-title"
+                label="Post Title"
+                placeholder="Your Title"
+                variant="outlined"
+                fullWidth
+                error={text1}
+                inputRef={inputEl1}
+              />
+            </div>
+            <div>
+              <TextField
+                required
+                id="post-content"
+                label="Post Content"
+                placeholder="Your Content"
+                multiline
+                rows="12"
+                variant="outlined"
+                error={text2}
+                inputRef={inputEl2}
+              />
+            </div>
+            <div className={classes.root}>
+              <DropzoneDialogExample changeFile={setImgarr} />
+            </div>
+            <div>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.submitButton}
+                endIcon={<SendIcon />}
+                onClick={validateandSubmit}
+              >
+                Submit
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
     </Card>
   );
 }
