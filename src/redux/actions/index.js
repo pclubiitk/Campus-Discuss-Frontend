@@ -1,28 +1,26 @@
 //Add action for subscribing the stream
-const AddStream = (stream) => {
+export const AddStream = (stream) => {
   return {
-    type: AddStream,
+    type: "ADD_STREAM",
     id: stream.id,
     text: stream.name,
   };
 };
 
 // Add action for unsubscribing the stream
-const DelStream = (stream) => {
+export const DelStream = (stream) => {
   return {
-    type: DelStream,
+    type: "DEL_STREAM",
     id: stream.id,
     text: stream.name,
   };
 };
 
 // Add action for changing the id of the active stream
-const ActiveStream = (stream) => {
+export const ActiveStream = (stream) => {
   return {
-    type: ActiveStream,
+    type: "ACTIVE_STREAM",
     id: stream.id,
     text: stream.name,
   };
 };
-
-export { AddStream, DelStream, ActiveStream };

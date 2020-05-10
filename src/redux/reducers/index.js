@@ -1,10 +1,19 @@
 // Imports all the required actions
 import { AddStream, DelStream, ActiveStream } from "../actions";
 
+// initial state defined for the reducers and selectors
+export const initialState = {
+  userProfile: {
+    name: null,
+  },
+  streams: [],
+  activeStream: {},
+};
+
 // defining the reducer for the actions imported
-const handleAction = (state, action) => {
+export const handleAction = (state = initialState, action) => {
   switch (action.type) {
-    case AddStream:
+    case "ADD_STREAM":
       return Object.assign({}, state, {
         streams: [
           ...state.streams,
@@ -16,12 +25,14 @@ const handleAction = (state, action) => {
         ],
       });
 
-    case DelStream:
+    case "DEL_STREAM":
       return {
+        profile: { ...state.profile },
         streams: [...state.streams.filter((stream) => stream.id !== action.id)],
+        activeStream: { ...state.activeStream },
       };
 
-    case ActiveStream:
+    case "ACTIVE_STREAM":
       return Object.assign({}, state, {
         activeStream: [
           ...state.activeStream,
@@ -37,5 +48,3 @@ const handleAction = (state, action) => {
       return state;
   }
 };
-
-export default handleAction;

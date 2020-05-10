@@ -12,7 +12,7 @@ import "./style.css";
 import { Typography } from "@material-ui/core";
 import { indigo, grey, blueGrey } from "@material-ui/core/colors";
 import { useSelector } from "react-redux";
-import { subscribedStreams, userProfile } from "../../selectors";
+import { subscribedStreams, userProfile } from "../../redux/selectors";
 
 const useStyles = makeStyles((theme) => {
   const dark = theme.palette.type === "dark";

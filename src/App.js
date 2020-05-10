@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { Provider } from "react-redux";
-import store from "./store";
+import store from "./redux/store";
 
 import Mainframe from "./Mainframe";
 import Login from "./screens/login";
