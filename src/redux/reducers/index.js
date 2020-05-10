@@ -27,7 +27,7 @@ export const handleAction = (state = initialState, action) => {
 
     case "DEL_STREAM":
       return {
-        profile: { ...state.profile },
+        userProfile: { ...state.userProfile },
         streams: [...state.streams.filter((stream) => stream.id !== action.id)],
         activeStream: { ...state.activeStream },
       };

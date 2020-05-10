@@ -1,20 +1,17 @@
 import { createSelector } from "reselect";
-import { handleAction } from "../reducers";
+import { handleAction, initialState } from "../reducers";
 
 // defining selector for list of the subscribed streams
 export const subscribedStreams = createSelector(
-  (state) => state.streams,
-  (streams) => streams
+  (state = initialState) => state.streams
 );
 
 // defining selector for returning the active stream
 export const activeStream = createSelector(
-  (state) => state.activeStream,
-  (activeStream) => activeStream
+  (state = initialState) => state.activeStream
 );
 
 // defining selector for returning the user profile details
 export const userProfile = createSelector(
-  (state) => state.userProfile,
-  (userProfile) => userProfile
+  (state = initialState) => state.userProfile
 );
