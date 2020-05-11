@@ -1,5 +1,4 @@
 import React from "react";
-import "./style.css";
 
 /* Using Material UI */
 import { Card } from "@material-ui/core";
