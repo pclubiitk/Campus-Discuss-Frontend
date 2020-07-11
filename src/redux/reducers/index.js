@@ -7,43 +7,38 @@ export const initialState = {
     name: null,
   },
   streams: [],
-  activeStream: {},
+  activeStreamId: {},
 };
 
 // defining the reducer for the actions imported
 export const handleAction = (state = initialState, action) => {
+  const { userProfile, streams, activeStreamId } = state;
   switch (action.type) {
-    case "ADD_STREAM":
-      return Object.assign({}, state, {
-        streams: [
-          ...state.streams,
-          {
-            id: action.id,
-            title: action.title,
-            author: action.author,
-          },
-        ],
-      });
-
-    case "DEL_STREAM":
-      return {
-        userProfile: { ...state.userProfile },
-        streams: [...state.streams.filter((stream) => stream.id !== action.id)],
-        activeStream: { ...state.activeStream },
+    case "ADD_STREAM": {
+      const new_stream = {
+        id: action.id,
+        title: action.title,
+        author: action.author,
       };
-
-    case "ACTIVE_STREAM":
-      return Object.assign({}, state, {
-        activeStream: [
-          ...state.activeStream,
-          {
-            id: action.id,
-            title: action.title,
-            author: action.author,
-          },
-        ],
-      });
-
+      let updated_streams = streams;
+      updated_streams.push(new_stream);
+      const updated_state = { userProfile, updated_streams, activeStreamId };
+      return updated_state;
+    }
+      
+    case "DEL_STREAM": {
+      const updated_streams = streams.filter((stream) => stream.id !== action.id);
+      const updated_state = { userProfile, updated_streams, activeStreamId };
+      return updated_state;
+    }
+      
+    
+    case "ACTIVE_STREAM": {
+      const updated_activeStreamId = action.id;
+      const updated_state = { userProfile, streams, updated_activeStreamId };
+      return updated_state;
+    }
+  
     default:
       return state;
   }
