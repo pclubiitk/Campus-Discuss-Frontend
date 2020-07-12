@@ -3,7 +3,6 @@ export const AddStream = (stream) => {
   return {
     type: "ADD_STREAM",
     id: stream.id,
-    text: stream.name,
   };
 };
 
@@ -12,7 +11,6 @@ export const DelStream = (stream) => {
   return {
     type: "DEL_STREAM",
     id: stream.id,
-    text: stream.name,
   };
 };
 
@@ -21,6 +19,5 @@ export const ActiveStream = (stream) => {
   return {
     type: "ACTIVE_STREAM",
     id: stream.id,
-    text: stream.name,
   };
 };

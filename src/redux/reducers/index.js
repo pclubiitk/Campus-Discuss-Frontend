@@ -15,11 +15,13 @@ export const handleAction = (state = initialState, action) => {
   const { userProfile, streams, activeStreamId } = state;
   switch (action.type) {
     case "ADD_STREAM": {
-      const new_stream = {
-        id: action.id,
-        title: action.title,
-        author: action.author,
-      };
+      const new_stream;
+      for (let i = 0; i < streams.length; i++) {
+        if (streams[i].id === action.id) {
+          new_stream = streams[i];
+          break;
+        }
+      }
       let updated_streams = streams;
       updated_streams.push(new_stream);
       const updated_state = { userProfile, updated_streams, activeStreamId };
