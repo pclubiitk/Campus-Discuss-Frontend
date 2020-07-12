@@ -11,6 +11,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import "./style.css";
 import { Typography } from "@material-ui/core";
 import { indigo, grey, blueGrey } from "@material-ui/core/colors";
+import { useSelector } from "react-redux";
+import { subscribedStreams, userProfile } from "../../redux/selectors";
 
 const useStyles = makeStyles((theme) => {
   const dark = theme.palette.type === "dark";
@@ -80,8 +82,10 @@ function StreamsList(props) {
   );
 }
 
-function Sidebar(props) {
+function Sidebar() {
   const classes = useStyles();
+  const streams = useSelector(subscribedStreams);
+  const user = useSelector(userProfile);
   return (
     <nav>
       <Drawer variant="permanent" anchor="left" width="100%">
@@ -89,10 +93,10 @@ function Sidebar(props) {
           Campus Discuss
         </Typography>
         <div className="streams-list-wrapper">
-          <StreamsList streams={props.streams} />
+          <StreamsList streams={streams} />
         </div>
         <div className="profile">
-          <Profile name={props.name} />
+          <Profile name={user.name} />
         </div>
       </Drawer>
     </nav>

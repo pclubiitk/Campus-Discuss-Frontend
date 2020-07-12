@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 import Mainframe from "./Mainframe";
 import Login from "./screens/login";
@@ -31,14 +33,16 @@ function App() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/login" component={Login} />
-          <PrivateRoute path="/" component={Mainframe} />
-        </Switch>
-      </BrowserRouter>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/login" component={Login} />
+            <PrivateRoute path="/" component={Mainframe} />
+          </Switch>
+        </BrowserRouter>
+      </ThemeProvider>
+    </Provider>
   );
 }
 
