@@ -8,7 +8,13 @@ export const subscribedStreams = createSelector(
 
 // defining selector for returning the active stream
 export const activeStreamId = createSelector(
-  (state = initialState) => state.activeStreamId
+  (state = initialState) => {
+    for (let i = 0; i < state.streams.length; i++){
+      if (state.streams[i].id === state.activeStreamId) {
+        return state.streams[i];
+      }
+    }
+  }
 );
 
 // defining selector for returning the user profile details
