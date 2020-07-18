@@ -1,3 +1,4 @@
+// @flow
 import React from "react";
 
 /*using Material UI*/
@@ -33,7 +34,11 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-function Topbar(props) {
+type Props = {
+  title: string,
+};
+
+function Topbar(props: Props) {
   const classes = useStyles();
 
   return (

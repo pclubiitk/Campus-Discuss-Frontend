@@ -1,3 +1,4 @@
+// @flow
 /*
   Props expected are :
   1. id
@@ -89,7 +90,7 @@ const getRandomColor = () => {
 };
 
 //returns avatar: image if provided otherwise first letter of author's name
-function AvatarProp(props) {
+function AvatarProp(props: { DP?: string, author: string }) {
   const bgcolor = useRef(getRandomColor()).current;
   if (!props.DP) {
     return (
@@ -108,7 +109,11 @@ function AvatarProp(props) {
     );
 }
 
-function DialogBox(props) {
+function DialogBox(props: {
+  open: boolean,
+  handleCancelClose: () => void,
+  setOpenReplyBoxId: (id: ?number) => void,
+}) {
   return (
     <Dialog
       open={props.open}
@@ -138,7 +143,7 @@ function DialogBox(props) {
   );
 }
 
-function ReplyBox(props) {
+function ReplyBox(props: { onReply: () => void }) {
   const classes = useStyles(props);
   const [open, setOpen] = useState(false);
 
@@ -191,6 +196,7 @@ function ReplyBox(props) {
             {...props}
             open={open}
             handleCancelClose={() => handleCancelClose()}
+            setOpenReplyBoxId={(id) => {}}
           />
         </div>
       </CardActions>
@@ -198,13 +204,26 @@ function ReplyBox(props) {
   );
 }
 
-function MaximisedComment(props) {
+function MaximisedComment(props: {
+  id: number,
+  author: string,
+  date: string,
+  text: string,
+  baseUpvotes: number,
+  baseDownvotes: number,
+  userVoted: boolean,
+  openReplyBox: (id: number) => void,
+  setOpenReplyBoxId: (id: ?number) => void,
+  onReply: (id: number) => {},
+  onUpvote: (id: number) => void,
+  onDownvote: (id: number) => void,
+}) {
   const classes = useStyles(props);
   const [vote, setVote] = useState(props.userVoted);
 
   const onReply = (props) => {
     // Handle reply button here
-    props.setOpenReplyBoxId("null");
+    props.setOpenReplyBoxId(null);
     props.onReply(props.id);
   };
 
@@ -288,7 +307,7 @@ function MaximisedComment(props) {
   );
 }
 
-function MinimisedComment(props) {
+function MinimisedComment(props: { author: string, text: string }) {
   const classes = useStyles(props);
   //minimised comments
   return (
@@ -312,7 +331,22 @@ function MinimisedComment(props) {
   );
 }
 
-const Comment = (props) => {
+const Comment = (props: {
+  id: number,
+  showReplies: boolean,
+  replies: any,
+  author: string,
+  date: string,
+  text: string,
+  baseUpvotes: number,
+  baseDownvotes: number,
+  userVoted: boolean,
+  onUpvote: (id: number) => void,
+  onDownvote: (id: number) => void,
+  onReply: (id: number) => any,
+  setOpenReplyBoxId: (id: ?number) => void,
+  openReplyBox: (id: number) => void,
+}) => {
   const classes = useStyles(props);
 
   //Handle replies by calling CommentReplies making recursion
@@ -325,6 +359,7 @@ const Comment = (props) => {
         <div className={classes.indent}>
           <CommentReplies
             replies={props.replies}
+            userVoted={props.userVoted}
             onUpvote={(id) => props.onUpvote(id)}
             onDownvote={(id) => props.onDownvote(id)}
             onReply={(id) => props.onReply(id)}

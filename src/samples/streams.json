@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "title": "Politics",
+    "description": "A forum for politics",
+    "followed_by": 45
+  },
+  {
+    "id": 2,
+    "title": "Equality",
+    "description": "something",
+    "followed_by": 22
+  }
+]

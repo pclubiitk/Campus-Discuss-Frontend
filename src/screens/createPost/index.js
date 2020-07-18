@@ -1,3 +1,4 @@
+// @flow
 import React, { useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -12,13 +13,12 @@ import SendIcon from "@material-ui/icons/Send";
 import { DropzoneDialog } from "material-ui-dropzone";
 import { Typography } from "@material-ui/core";
 import { blueGrey, indigo, grey } from "@material-ui/core/colors";
+import Screen from "../screen";
 
 const useStyles = makeStyles((theme) => {
   const dark = theme.palette.type === "dark";
   return {
     outer: {
-      height: "100vh",
-      width: "100vw",
       backgroundColor: dark ? grey["900"] : blueGrey["50"],
       borderRadius: 0,
     },
@@ -124,9 +124,14 @@ function DropzoneDialogExample(props) {
   );
 }
 
-export default function CreatePost(props) {
-  const inputEl1 = useRef(null);
-  const inputEl2 = useRef(null);
+type Props = {
+  onSubmit: (name: string, description: string, images: File[]) => void,
+  stream: string,
+};
+
+const CreatePost = (props: Props) => {
+  const inputEl1 = useRef<HTMLInputElement | null>(null);
+  const inputEl2 = useRef<HTMLInputElement | null>(null);
   const classes = useStyles();
 
   const [imgarr, setImgarr] = useState([]);
@@ -134,6 +139,7 @@ export default function CreatePost(props) {
   const [text2, setText2] = useState(false);
 
   const validateandSubmit = () => {
+    if (!inputEl1.current || !inputEl2.current) return;
     let formValid = false;
     if (inputEl1.current.value === "") {
       setText1(true);
@@ -156,71 +162,84 @@ export default function CreatePost(props) {
   };
 
   return (
-    <Card className={classes.outer}>
-      <Card className={classes.card}>
-        <CardHeader
-          avatar={
-            <Avatar className={classes.avatar}>
-              <CreateIcon color="primary" fontSize="medium" />
-            </Avatar>
-          }
-          title={
-            <Typography className={classes.title} variant="h5">
-              CREATE POST
-            </Typography>
-          }
-          subheader={
-            <Typography className={classes.subheader}>
-              {props.stream}
-            </Typography>
-          }
-          className={classes.header}
-        />
+    <>
+      <Card className={classes.outer}>
+        <Card className={classes.card}>
+          <CardHeader
+            avatar={
+              <Avatar className={classes.avatar}>
+                <CreateIcon color="primary" fontSize="medium" />
+              </Avatar>
+            }
+            title={
+              <Typography className={classes.title} variant="h5">
+                CREATE POST
+              </Typography>
+            }
+            subheader={
+              <Typography className={classes.subheader}>
+                {props.stream}
+              </Typography>
+            }
+            className={classes.header}
+          />
 
-        <CardContent>
-          <form className={classes.root} noValidate autoComplete="off">
-            <div>
-              <TextField
-                required
-                id="post-title"
-                label="Post Title"
-                placeholder="Your Title"
-                variant="outlined"
-                fullWidth
-                error={text1}
-                inputRef={inputEl1}
-              />
-            </div>
-            <div>
-              <TextField
-                required
-                id="post-content"
-                label="Post Content"
-                placeholder="Your Content"
-                multiline
-                rows="12"
-                variant="outlined"
-                error={text2}
-                inputRef={inputEl2}
-              />
-            </div>
-            <div className={classes.root}>
-              <DropzoneDialogExample changeFile={setImgarr} />
-            </div>
-            <div>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.submitButton}
-                endIcon={<SendIcon />}
-                onClick={validateandSubmit}
-              >
-                Submit
-              </Button>
-            </div>
-          </form>
-        </CardContent>
+          <CardContent>
+            <form className={classes.root} noValidate autoComplete="off">
+              <div>
+                <TextField
+                  required
+                  id="post-title"
+                  label="Post Title"
+                  placeholder="Your Title"
+                  variant="outlined"
+                  fullWidth
+                  error={text1}
+                  inputRef={inputEl1}
+                />
+              </div>
+              <div>
+                <TextField
+                  required
+                  id="post-content"
+                  label="Post Content"
+                  placeholder="Your Content"
+                  multiline
+                  rows="12"
+                  variant="outlined"
+                  error={text2}
+                  inputRef={inputEl2}
+                />
+              </div>
+              <div className={classes.root}>
+                <DropzoneDialogExample changeFile={setImgarr} />
+              </div>
+              <div>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.submitButton}
+                  endIcon={<SendIcon />}
+                  onClick={validateandSubmit}
+                >
+                  Submit
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
       </Card>
-    </Card>
+    </>
   );
-}
+};
+
+const CreatePostScreen = () => {
+  return (
+    <Screen
+      title="Create post"
+      renderMain={() => <CreatePost onSubmit={() => {}} stream={"Politics"} />}
+    />
+  );
+};
+
+export default CreatePostScreen;

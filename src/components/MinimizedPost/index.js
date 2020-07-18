@@ -1,3 +1,4 @@
+// @flow
 import React from "react";
 
 /* Using Material UI */
@@ -14,7 +15,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MinimizedPost(props) {
+type Props = {
+  postTitle: string,
+  postAuthor: string,
+};
+
+function MinimizedPost(props: Props) {
   const classes = useStyles();
   return (
     <Card className={classes.card} variant="outlined">

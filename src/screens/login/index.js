@@ -13,6 +13,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { blueGrey, indigo } from "@material-ui/core/colors";
+import sideImg from "../../assets/login-img.jpg";
 
 const useStyles = makeStyles((theme) => {
   const dark = theme.palette.type === "dark";
@@ -21,8 +22,7 @@ const useStyles = makeStyles((theme) => {
       height: "100vh",
     },
     image: {
-      backgroundImage:
-        "url(https://cdn4.vectorstock.com/i/1000x1000/33/28/discussion-and-communication-in-the-office-vector-22823328.jpg)",
+      backgroundImage: `url("${sideImg}")`,
       backgroundRepeat: "no-repeat",
       backgroundColor:
         theme.palette.type === "light"

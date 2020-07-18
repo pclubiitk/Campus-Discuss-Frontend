@@ -1,106 +1,121 @@
-import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
-import Drawer from "@material-ui/core/Drawer";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import { makeStyles } from "@material-ui/core/styles";
-import "./style.css";
-import { Typography } from "@material-ui/core";
-import { indigo, grey, blueGrey } from "@material-ui/core/colors";
-import { useSelector } from "react-redux";
+// @flow
+import React from "react";
+import { useHistory } from "react-router";
+import RssFeedIcon from "@material-ui/icons/RssFeed";
 import { subscribedStreams, userProfile } from "../../redux/selectors";
+import { useSelector } from "react-redux";
 
-const useStyles = makeStyles((theme) => {
-  const dark = theme.palette.type === "dark";
-  return {
-    profileName: {
-      color: dark ? grey["400"] : indigo["900"],
-    },
-    accountCircleIcon: {
-      color: dark ? indigo["400"] : indigo["900"],
-    },
-    appName: {
-      textAlign: "center",
-      fontSize: "28px",
-      padding: "10px",
-      backgroundColor: dark ? grey["700"] : indigo["700"],
-      color: dark ? indigo["50"] : indigo["50"],
-    },
-  };
-});
+import {
+  Typography,
+  Avatar,
+  Hidden,
+  Drawer,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  CardHeader,
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
-const styles = {
-  root: {
-    minWidth: 40,
+const drawerWidth = 240;
+
+const useStyles = makeStyles((theme) => ({
+  drawer: {
+    [theme.breakpoints.up("sm")]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
   },
-};
-function Profile(props) {
+  toolbar: {
+    ...theme.mixins.toolbar,
+    textAlign: "center",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  profile: {
+    transition: "all 0.15s ease-in-out",
+    "&:hover": {
+      background: "#ececec",
+    },
+  },
+}));
+
+const SideBar = () => {
   const classes = useStyles();
-  // AccountCircleIcon can be replaced by Avatar when we add Profile Picture functionality
-  return (
-    <Button
-      color="primary"
-      startIcon={
-        <Typography className={classes.accountCircleIcon}>
-          <AccountCircleIcon />
-        </Typography>
-      }
-      fullWidth
-    >
-      <Typography className={classes.profileName}>{props.name}</Typography>
-    </Button>
-  );
-}
-
-function StreamItem(props) {
-  return (
-    <ListItem
-      button
-      className={styles.root}
-      onClick={() => alert("clicked " + props.streamName)}
-    >
-      <ListItemIcon className={styles.root}>
-        <ChevronRightIcon />
-      </ListItemIcon>
-      <ListItemText primary={props.streamName} />
-    </ListItem>
-  );
-}
-
-function StreamsList(props) {
-  const list = props.streams.map((stream) => (
-    <StreamItem streamName={stream} />
-  ));
-  return (
-    <List component="nav" className="streams-list">
-      {list}
-    </List>
-  );
-}
-
-function Sidebar() {
-  const classes = useStyles();
+  const history = useHistory();
   const streams = useSelector(subscribedStreams);
-  const user = useSelector(userProfile);
-  return (
-    <nav>
-      <Drawer variant="permanent" anchor="left" width="100%">
-        <Typography variant="h4" className={classes.appName}>
+  const profile = useSelector(userProfile);
+
+  const drawer = (isMobile) => (
+    <div>
+      <div className={classes.toolbar}>
+        <Typography variant="h5" color="primary">
           Campus Discuss
         </Typography>
-        <div className="streams-list-wrapper">
-          <StreamsList streams={streams} />
-        </div>
-        <div className="profile">
-          <Profile name={user.name} />
-        </div>
-      </Drawer>
+      </div>
+      <Divider />
+      <div className={classes.profile} onClick={() => history.push("/profile")}>
+        <CardHeader
+          avatar={<Avatar />}
+          title={profile.name}
+          subheader={profile.username}
+        />
+      </div>
+      <Divider />
+      <List>
+        {streams.map((stream) => (
+          <ListItem
+            button
+            key={stream.id}
+            onClick={() => history.push(`/stream/${stream.id}`)}
+          >
+            <ListItemIcon>
+              <RssFeedIcon />
+            </ListItemIcon>
+            <ListItemText primary={stream.title} />
+          </ListItem>
+        ))}
+      </List>
+    </div>
+  );
+
+  return (
+    <nav className={classes.drawer}>
+      {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+      <Hidden smUp implementation="css">
+        <Drawer
+          variant="temporary"
+          open={false}
+          onClose={() => {}}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          ModalProps={{
+            keepMounted: true,
+          }}
+        >
+          {drawer(true)}
+        </Drawer>
+      </Hidden>
+      <Hidden xsDown implementation="css">
+        <Drawer
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          variant="permanent"
+          open
+        >
+          {drawer(false)}
+        </Drawer>
+      </Hidden>
     </nav>
   );
-}
+};
 
-export default Sidebar;
+export default SideBar;

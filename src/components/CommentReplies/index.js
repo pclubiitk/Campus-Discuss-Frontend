@@ -1,20 +1,22 @@
-/*
-    Props expected are :
-    1. replies
-    2. onUpvote
-    3. onDownvote
-    4. onReply
-    5. setOpenReplyBoxId
-    6. openReplyBox
-*/
-
+// @flow
 import React, { useState } from "react";
 import Comment from "../comment";
 import { Collapse, CardActionArea } from "@material-ui/core";
+import { type CommentType } from "../CommentsContainer";
 
 const maxViewableComments = 3;
 
-function CommentReplies(props) {
+type Props = {
+  userVoted: boolean,
+  replies: CommentType[],
+  onUpvote: (id: number) => void,
+  onDownvote: (id: number) => void,
+  onReply: (id: number) => void,
+  openReplyBox: (id: number) => void,
+  setOpenReplyBoxId: (id: ?number) => void,
+};
+
+function CommentReplies(props: Props) {
   const [showComments, setShowComments] = useState(false);
 
   //comments viewable in minimised form
@@ -24,6 +26,7 @@ function CommentReplies(props) {
       <Comment
         key={reply.id}
         {...reply}
+        userVoted={props.userVoted}
         onUpvote={(id) => props.onUpvote(id)}
         onDownvote={(id) => props.onDownvote(id)}
         onReply={(id) => props.onReply(id)}
@@ -40,6 +43,7 @@ function CommentReplies(props) {
       <Comment
         key={reply.id}
         {...reply}
+        userVoted={props.userVoted}
         onUpvote={(id) => props.onUpvote(id)}
         onDownvote={(id) => props.onDownvote(id)}
         onReply={(id) => props.onReply(id)}

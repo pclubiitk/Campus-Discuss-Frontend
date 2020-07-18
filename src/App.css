@@ -36,3 +36,31 @@
     transform: rotate(360deg);
   }
 }
+
+.app-container {
+  display: flex;
+  height: 100%;
+}
+
+.sidebar-container {
+  flex: 0;
+  height: 100%;
+}
+
+.main-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100vh;
+}
+
+.topbar-container {
+  flex: 0;
+  height: 100px;
+}
+
+.main-container {
+  flex-grow: 1;
+  height: 100%;
+  overflow-y: scroll;
+}

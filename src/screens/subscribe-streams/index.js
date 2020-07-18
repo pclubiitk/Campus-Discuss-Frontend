@@ -1,65 +1,59 @@
+// @flow
 import React from "react";
-
-import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-
+import allStreams from "../../samples/all-streams.json";
+import Screen from "../screen";
 import "./style.css";
 
-import Data from "./Streams.json";
+const SubscribeButton = (props: {
+  subscribed: boolean,
+  onSubscribe: () => void,
+}) => {
+  return props.subscribed ? null : (
+    <Button
+      color="primary"
+      onClick={(event) => {
+        event.stopPropagation();
+        props.onSubscribe();
+      }}
+    >
+      Subscribe
+    </Button>
+  );
+};
 
-const useStyles = makeStyles({
-  subscribe: {
-    top: "50%",
-    alignItems: "center",
-  },
-});
+const Streams = () => {
+  return (
+    <>
+      {allStreams.map((stream) => {
+        return (
+          <Card variant="outlined" key={stream.id} onClick={() => {}}>
+            <CardHeader
+              title={stream.name}
+              subheader={stream.followers + " followers"}
+              action={
+                <SubscribeButton
+                  subscribed={stream.subscribed}
+                  onSubscribe={() => {}}
+                />
+              }
+            ></CardHeader>
+            <CardContent className="content">
+              <Typography variant="body2"> {stream.description} </Typography>
+            </CardContent>
+          </Card>
+        );
+      })}
+    </>
+  );
+};
 
-function subButton(sub, subStyle, onSubscribe, title) {
-  if (!sub)
-    return (
-      <Button
-        color="primary"
-        onClick={(event) => {
-          event.stopPropagation();
-          onSubscribe(title);
-        }}
-      >
-        Subscribe
-      </Button>
-    );
-}
+const StreamsScreen = () => {
+  return <Screen title="All streams" renderMain={() => <Streams />} />;
+};
 
-function Streams(props) {
-  const classes = useStyles();
-  const newdata = Data.map((data, i) => {
-    return (
-      <Card
-        variant="outlined"
-        key={data.id}
-        onClick={() => props.onOpen(data.id)}
-      >
-        <CardHeader
-          title={data.title}
-          subheader={data.followers + " followers"}
-          subheaderTypographyProps='variant = "overline"'
-          action={subButton(
-            props.subscribed[i],
-            classes.subscribe,
-            props.onSubscribe,
-            data.id
-          )}
-        ></CardHeader>
-        <CardContent className={"content"}>
-          <Typography variant="body2"> {data.description} </Typography>
-        </CardContent>
-      </Card>
-    );
-  });
-  return <div>{newdata}</div>;
-}
-
-export default Streams;
+export default StreamsScreen;

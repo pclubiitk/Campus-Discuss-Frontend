@@ -1,3 +1,4 @@
+// @flow
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -6,7 +7,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
-import { red, indigo, grey, blueGrey } from "@material-ui/core/colors";
+import { red, indigo, grey } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => {
   const dark = theme.palette.type === "dark";
@@ -32,26 +33,30 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function MaximisedPost(props) {
+type Props = {
+  author: string,
+  title: string,
+  content: string,
+};
+
+export default function MaximisedPost(props: Props) {
   const classes = useStyles();
 
   return (
     <Card className={classes.card}>
       <CardHeader
         avatar={
-          <Avatar aria-label={props.postAuthor} className={classes.avatar}>
+          <Avatar aria-label={props.author} className={classes.avatar}>
             P
           </Avatar>
         }
         title={
           <Typography className={classes.title} variant="h5">
-            {props.postTitle}
+            {props.title}
           </Typography>
         }
         subheader={
-          <Typography className={classes.subheader}>
-            {props.postAuthor}
-          </Typography>
+          <Typography className={classes.subheader}>{props.author}</Typography>
         }
         className={classes.header}
       />
@@ -61,8 +66,8 @@ export default function MaximisedPost(props) {
         title="pclub"
       />
       <CardContent>
-        <Typography variant="body2" color="black" component="p">
-          {props.postData}
+        <Typography variant="body2" component="p">
+          {props.content}
         </Typography>
       </CardContent>
     </Card>

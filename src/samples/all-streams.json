@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "followers": 44,
+    "subscribed": true,
+    "name": "Politics",
+    "description": "A forum for all political discussions."
+  },
+  {
+    "id": 2,
+    "followers": 71,
+    "subscribed": false,
+    "name": "Reservations",
+    "description": "Are reservations good or too much?"
+  },
+  {
+    "id": 3,
+    "followers": 9,
+    "subscribed": false,
+    "name": "Equality",
+    "description": "whatever"
+  }
+]

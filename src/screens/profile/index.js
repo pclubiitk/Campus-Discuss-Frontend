@@ -1,5 +1,5 @@
+// @flow
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
 import {
   Card,
@@ -14,16 +14,14 @@ import {
   Typography,
   LinearProgress,
 } from "@material-ui/core";
-import Topbar from "../../components/Topbar";
-import Link from "@material-ui/core/Link";
 import { indigo, blueGrey, grey } from "@material-ui/core/colors";
+import Screen from "../screen";
 
 const useStyles = makeStyles((theme) => {
   const dark = theme.palette.type === "dark";
   return {
     outer: {
-      height: "100vh",
-      width: "100vw",
+      height: "100%",
       backgroundColor: dark ? grey["900"] : blueGrey["50"],
       borderRadius: 0,
     },
@@ -61,9 +59,19 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-const Profile = (props) => {
+type Props = {
+  name: string,
+  userName: string,
+  mail: string,
+  fbLink: string,
+  followers: number,
+  following: number,
+  hall: number,
+};
+
+const Profile = (props: Props) => {
   const { ...rest } = props;
-  const dpInput = React.createRef();
+  const dpInput = React.useRef<HTMLInputElement | null>(null);
 
   const classes = useStyles();
 
@@ -99,6 +107,7 @@ const Profile = (props) => {
   const [avatar, setAvatar] = useState({ selectedFile: null });
 
   const triggerInput = () => {
+    if (!dpInput.current) return;
     dpInput.current.click();
   };
 
@@ -130,7 +139,6 @@ const Profile = (props) => {
     <React.Fragment>
       <Card className={classes.outer}>
         <div className={classes.root}>
-          <Topbar title="Profile" />
           <Grid container spacing={4}>
             <Grid item md={6} lg={4} xl={4} xs={12}>
               <Card>
@@ -138,8 +146,8 @@ const Profile = (props) => {
                   <div className={classes.details}>
                     <div>
                       <Typography gutterBottom variant="h4">
-                        {values.firstName} {values.lastName}
-                        <Typography>{<i>{values.nickname}</i>}</Typography>
+                        {values.name}
+                        <Typography>{<i>{values.userName}</i>}</Typography>
                       </Typography>
                       <Typography color="textSecondary" variant="body1">
                         Following: {values.following}
@@ -292,31 +300,28 @@ const Profile = (props) => {
             </Grid>
           </Grid>
         </div>
-        <footer style={{ height: "5px", marginTop: "10%" }}>
-          <center>
-            <Typography color="textSecondary" variant="body1">
-              Copyright ©{" "}
-              <Link color="inherit" href="https://pclub.in">
-                Programming Club IIT Kanpur
-              </Link>{" "}
-              {new Date().getFullYear()}
-              {"."}
-            </Typography>
-          </center>
-        </footer>
       </Card>
     </React.Fragment>
   );
 };
 
-Profile.propTypes = {
-  name: PropTypes.string,
-  userName: PropTypes.string,
-  email: PropTypes.string,
-  fblink: PropTypes.string,
-  followers: PropTypes.number,
-  following: PropTypes.number,
-  hall: PropTypes.number,
+const ProfileScreen = () => {
+  return (
+    <Screen
+      title={"Profile"}
+      renderMain={() => (
+        <Profile
+          name="John Doe"
+          mail="john@iitk.ac.in"
+          userName="Johnny"
+          fbLink="something"
+          followers={24}
+          following={11}
+          hall={2}
+        />
+      )}
+    />
+  );
 };
 
-export default Profile;
+export default ProfileScreen;
