@@ -9,7 +9,7 @@ export const userProfile = (state: Store = initialState) => state.userProfile;
 
 // Selector for getting stream by ID
 export const streamById = (id: number) => (state: Store = initialState) => {
-  return state.streams.find((stream) => stream._id === id);
+  return state.streams.find((stream) => stream.pk === id);
 };
 
 // Is a user logged in?

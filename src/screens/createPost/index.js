@@ -156,7 +156,7 @@ const CreatePost = (props: Props) => {
           contentEl.current.value,
           stream.title
         );
-        history.push(`/stream/${stream._id}`);
+        history.push(`/stream/${stream.pk}`);
       } catch (error) {
         enqueueSnackbar("An error occured while sending your post.", {
           variant: "error",

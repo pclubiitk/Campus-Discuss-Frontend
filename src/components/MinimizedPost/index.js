@@ -28,16 +28,16 @@ const MinimizedPost = (props: Props) => {
     <Card
       className={classes.card}
       variant="outlined"
-      onClick={() => history.push(`/post/${post._id}`)}
+      onClick={() => history.push(`/post/${post.pk}`)}
     >
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            {post.author[0]}
+            {post.author.name}
           </Avatar>
         }
         title={post.post_title}
-        subheader={`${post.author} ￮ ${post.pub_date}`}
+        subheader={`${post.author.name} ￮ ${post.pub_date}`}
       />
     </Card>
   );

@@ -23,7 +23,7 @@ export const handleAction = (
   switch (action.type) {
     case "SUBSCRIBE_STREAM": {
       state.streams.forEach((stream) => {
-        if (stream._id === action.stream._id) return state;
+        if (stream.pk === action.stream.pk) return state;
       });
       const new_streams = [...state.streams];
       new_streams.push(action.stream);
@@ -32,7 +32,7 @@ export const handleAction = (
 
     case "UNSUBSCRIBE_STREAM": {
       const new_streams: Array<Types.Stream> = state.streams.filter(
-        (stream) => stream._id !== action.streamId
+        (stream) => stream.pk !== action.streamId
       );
       return { ...state, streams: new_streams };
     }

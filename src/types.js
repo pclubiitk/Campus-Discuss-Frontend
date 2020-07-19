@@ -1,7 +1,7 @@
 // @flow
 
 export type UserData = {
-  _id: number,
+  pk: number,
   name: string,
   roll: number,
   username: string,
@@ -12,18 +12,18 @@ export type UserData = {
 };
 
 export type Stream = {
-  _id: number,
+  pk: number,
   title: string,
   description: string,
   followed_by: number,
 };
 
 export type Post = {
-  _id: number,
+  pk: number,
   post_text: string,
   post_title: string,
   pub_date: string,
   last_modified: string,
-  author: string,
+  author: UserData,
   stream: number,
 };
