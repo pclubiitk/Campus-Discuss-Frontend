@@ -1,21 +1,39 @@
 // @flow
 import * as React from "react";
+import { useSnackbar } from "notistack";
 import { useRouteMatch } from "react-router";
 import { useSelector } from "react-redux";
 import { streamById } from "../../redux/selectors";
 import PostsList from "../../components/stream_screen";
 import samplePosts from "../../samples/posts.json";
-import Screen from "../screen";
+import { getPostsByStream } from "../../utils/requests";
+import { Screen } from "../utils";
 
 const StreamHome = () => {
   const streamId = useRouteMatch().params.id;
+  console.log(streamId);
+  const [posts, setPosts] = React.useState([]);
+  const { enqueueSnackbar } = useSnackbar();
   const stream = useSelector(streamById(parseInt(streamId)));
-  if (!stream) return null; // Fix this. Or doesnt matter, maybe
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        setPosts(await getPostsByStream(streamId));
+      } catch (error) {
+        enqueueSnackbar("An error occured while getting stream posts.", {
+          variant: "error",
+        });
+      }
+    })();
+  }, [streamId, enqueueSnackbar]);
+
+  if (!stream) return <p>Helo</p>; // Fix this. Or doesnt matter, maybe
 
   return (
     <Screen
       title={stream.title}
-      renderMain={() => <PostsList postArr={samplePosts} />}
+      renderMain={() => <PostsList postArr={posts} />}
     />
   );
 };

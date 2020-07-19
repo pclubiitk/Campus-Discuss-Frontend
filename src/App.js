@@ -1,8 +1,10 @@
 // @flow
 import React, { useState, useMemo } from "react";
+import { SnackbarProvider } from "notistack";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
+import { isLoggedIn } from "./redux/selectors";
 import store from "./redux/store";
 
 import Mainframe from "./Mainframe";
@@ -24,8 +26,17 @@ const PrivateRoute = (props: {
 };
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [useDarkMode, setUseDarkMode] = useState(false);
+  const loggedIn = useSelector(isLoggedIn);
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, [loggedIn]);
 
   const theme = useMemo(
     () =>
@@ -38,20 +49,16 @@ const App = () => {
   );
 
   return (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <Switch>
-            <Route exact path="/login" component={Login} />
-            <PrivateRoute
-              path="/"
-              isAuthenticated={isAuthenticated}
-              render={Mainframe}
-            />
-          </Switch>
-        </BrowserRouter>
-      </ThemeProvider>
-    </Provider>
+    <ThemeProvider theme={theme}>
+      <Switch>
+        <Route exact path="/login" component={Login} />
+        <PrivateRoute
+          path="/"
+          isAuthenticated={isAuthenticated}
+          render={Mainframe}
+        />
+      </Switch>
+    </ThemeProvider>
   );
 };
 

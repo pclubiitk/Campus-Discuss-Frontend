@@ -1,6 +1,6 @@
 // @flow
 import * as React from "react";
-import Screen from "../screen";
+import { Screen } from "../utils";
 import MaximisedPost from "../../components/MaximisedPost";
 import CommentsContainer from "../../components/CommentsContainer";
 

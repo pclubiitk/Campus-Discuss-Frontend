@@ -6,7 +6,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import allStreams from "../../samples/all-streams.json";
-import Screen from "../screen";
+import { Screen } from "../utils";
 import "./style.css";
 
 const SubscribeButton = (props: {

@@ -12,10 +12,12 @@ import {
   TextField,
   Avatar,
   Typography,
-  LinearProgress,
+  // LinearProgress,
 } from "@material-ui/core";
 import { indigo, blueGrey, grey } from "@material-ui/core/colors";
-import Screen from "../screen";
+import { Screen } from "../utils";
+import { useSelector } from "react-redux";
+import { userProfile } from "../../redux/selectors";
 
 const useStyles = makeStyles((theme) => {
   const dark = theme.palette.type === "dark";
@@ -70,37 +72,27 @@ type Props = {
 };
 
 const Profile = (props: Props) => {
-  const { ...rest } = props;
   const dpInput = React.useRef<HTMLInputElement | null>(null);
+  const profile = useSelector(userProfile);
 
   const classes = useStyles();
 
-  const [values, setValues] = useState({
-    name: props.name,
-    userName: props.userName,
-    email: props.mail,
-    fblink: props.fbLink,
-    followers: props.followers,
-    following: props.following,
-    hall: props.hall,
-  });
-
   //Handle change in text fields and update profile completeness
 
-  const [completenessIndex, setCompletenessIndex] = useState(0);
+  // const [completenessIndex, setCompletenessIndex] = useState(0);
 
   const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value,
-    });
-    var count = 0;
-    for (var key in values) {
-      if (values[key]) {
-        count++;
-      }
-    }
-    setCompletenessIndex(parseInt((count * 100) / 6));
+    // setValues({
+    //   ...values,
+    //   [event.target.name]: event.target.value,
+    // });
+    // var count = 0;
+    // for (var key in values) {
+    //   if (values[key]) {
+    //     count++;
+    //   }
+    // }
+    // setCompletenessIndex(parseInt((count * 100) / 6));
   };
 
   //Defined functions for Profile Image upload
@@ -146,22 +138,22 @@ const Profile = (props: Props) => {
                   <div className={classes.details}>
                     <div>
                       <Typography gutterBottom variant="h4">
-                        {values.name}
-                        <Typography>{<i>{values.userName}</i>}</Typography>
+                        {profile.name}
+                        <Typography>{<i>{profile.username}</i>}</Typography>
                       </Typography>
                       <Typography color="textSecondary" variant="body1">
-                        Following: {values.following}
+                        Following: {profile.following}
                       </Typography>
-                      <Typography color="textSecondary" variant="body1">
-                        Followers: {values.followers}
-                      </Typography>
+                      {/* <Typography color="textSecondary" variant="body1">
+                        Followers: {profile.followers}
+                      </Typography> */}
                     </div>
                     <Avatar
                       className={classes.avatar}
                       src={avatar.selectedFile}
                     />
                   </div>
-                  <div className={classes.progress}>
+                  {/* <div className={classes.progress}>
                     <Typography variant="body1">
                       Profile Completeness: {completenessIndex}%
                     </Typography>
@@ -169,7 +161,7 @@ const Profile = (props: Props) => {
                       value={completenessIndex}
                       variant="determinate"
                     />
-                  </div>
+                  </div> */}
                 </CardContent>
                 <Divider />
                 <CardActions>
@@ -202,7 +194,7 @@ const Profile = (props: Props) => {
             </Grid>
 
             <Grid item md={6} xs={12} xl={8} lg={8}>
-              <Card {...rest}>
+              <Card>
                 <form autoComplete="off" noValidate>
                   <CardHeader
                     subheader="The information can be edited"
@@ -217,7 +209,7 @@ const Profile = (props: Props) => {
                           label="Name"
                           margin="dense"
                           name="name"
-                          value={values.name}
+                          value={profile.name}
                           variant="outlined"
                           disabled
                         />
@@ -228,7 +220,7 @@ const Profile = (props: Props) => {
                           label="Username"
                           margin="dense"
                           name="userName"
-                          value={values.userName}
+                          value={profile.username}
                           variant="outlined"
                           disabled
                         />
@@ -242,7 +234,7 @@ const Profile = (props: Props) => {
                           name="email"
                           onChange={handleChange}
                           required
-                          value={values.email}
+                          value={profile.email}
                           variant="outlined"
                         />
                       </Grid>
@@ -256,7 +248,7 @@ const Profile = (props: Props) => {
                           onChange={handleChange}
                           required
                           type="url"
-                          value={values.fblink}
+                          value={profile.fblink}
                           variant="outlined"
                         />
                       </Grid>
@@ -272,7 +264,7 @@ const Profile = (props: Props) => {
                           select
                           // eslint-disable-next-line react/jsx-sort-props
                           SelectProps={{ native: true }}
-                          value={values.hall}
+                          value={profile.hall}
                           variant="outlined"
                         >
                           {halls.map((option) => (

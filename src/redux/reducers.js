@@ -23,7 +23,7 @@ export const handleAction = (
   switch (action.type) {
     case "SUBSCRIBE_STREAM": {
       state.streams.forEach((stream) => {
-        if (stream.id === action.stream.id) return state;
+        if (stream._id === action.stream._id) return state;
       });
       const new_streams = [...state.streams];
       new_streams.push(action.stream);
@@ -32,9 +32,17 @@ export const handleAction = (
 
     case "UNSUBSCRIBE_STREAM": {
       const new_streams: Array<Types.Stream> = state.streams.filter(
-        (stream) => stream.id !== action.streamId
+        (stream) => stream._id !== action.streamId
       );
       return { ...state, streams: new_streams };
+    }
+
+    case "LOGIN": {
+      return { ...state, userProfile: action.profile, streams: action.streams };
+    }
+
+    case "LOGOUT": {
+      return { userProfile: null, streams: [] };
     }
 
     default:

@@ -1,41 +1,46 @@
 // @flow
 import React from "react";
-
-/* Using Material UI */
-import { Card } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core";
-import { CardContent } from "@material-ui/core";
-import { CardActionArea } from "@material-ui/core";
-import { Typography } from "@material-ui/core";
+import { type Post } from "../../types";
+import { useHistory } from "react-router";
+import { Card, CardHeader } from "@material-ui/core";
+import { makeStyles, Avatar } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   card: {
     display: "flex",
     width: "100%",
+    transition: "all 0.15s ease-in-out",
+    "&:hover": {
+      background: "rgba(128, 128, 128, 0.1)",
+    },
   },
 }));
 
 type Props = {
-  postTitle: string,
-  postAuthor: string,
+  post: Post,
 };
 
-function MinimizedPost(props: Props) {
+const MinimizedPost = (props: Props) => {
+  const { post } = props;
+  const history = useHistory();
   const classes = useStyles();
   return (
-    <Card className={classes.card} variant="outlined">
-      <CardActionArea>
-        <CardContent>
-          <Typography variant="h5" color="inherit" gutterBottom>
-            <b>{props.postTitle}</b>
-          </Typography>
-          <Typography variant="body1" color="textSecondary">
-            by <b>{props.postAuthor}</b>
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+    <Card
+      className={classes.card}
+      variant="outlined"
+      onClick={() => history.push(`/post/${post._id}`)}
+    >
+      <CardHeader
+        avatar={
+          <Avatar aria-label="recipe" className={classes.avatar}>
+            {post.author[0]}
+          </Avatar>
+        }
+        title={post.post_title}
+        subheader={`${post.author} ￮ ${post.pub_date}`}
+      />
     </Card>
   );
-}
+};
 
 export default MinimizedPost;
