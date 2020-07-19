@@ -1,44 +1,85 @@
 // @flow
 import React from "react";
+import { type Stream } from "../../types";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import allStreams from "../../samples/all-streams.json";
+import {
+  getAllStreams,
+  subscribeToStream,
+  unsubscribeFromStream,
+} from "../../utils/requests";
+import { useDispatch } from "react-redux";
+import { SubscribeStream, UnsubscribeStream } from "../../redux/actions";
 import { Screen } from "../utils";
+import { useSnackbar } from "notistack";
 import "./style.css";
 
 const SubscribeButton = (props: {
   subscribed: boolean,
-  onSubscribe: () => void,
+  onSubscribe: () => Promise<void>,
+  onUnsubscribe: () => Promise<void>,
 }) => {
-  return props.subscribed ? null : (
+  return (
     <Button
       color="primary"
       onClick={(event) => {
         event.stopPropagation();
-        props.onSubscribe();
+        props.subscribed ? props.onUnsubscribe() : props.onSubscribe();
       }}
     >
-      Subscribe
+      {props.subscribed ? "Unsubscribe" : "Subscribe"}
     </Button>
   );
 };
 
 const Streams = () => {
+  const [allStreams, setAllStreams] = React.useState([]);
+  const [count, setCount] = React.useState(0); // For force updating
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const streams = await getAllStreams();
+        setAllStreams(streams);
+      } catch (error) {
+        enqueueSnackbar("Could not get list of streams.", { variant: "error" });
+      }
+    })();
+  }, []);
+
+  const subscribeTo = async (stream: Stream) => {
+    await subscribeToStream(stream.pk);
+    dispatch(SubscribeStream(stream));
+    stream.is_subscribed = true;
+    setCount((c) => ++c);
+  };
+
+  const unsubscribeFrom = async (stream: Stream) => {
+    await unsubscribeFromStream(stream.pk);
+    dispatch(UnsubscribeStream(stream.pk));
+    stream.is_subscribed = false;
+    setCount((c) => ++c);
+  };
+
   return (
     <>
       {allStreams.map((stream) => {
         return (
-          <Card variant="outlined" key={stream.id} onClick={() => {}}>
+          <Card variant="outlined" key={stream.pk} onClick={() => {}}>
             <CardHeader
-              title={stream.name}
-              subheader={stream.followers + " followers"}
+              title={stream.title}
+              // subheader={stream.followed_by + " followers"}
               action={
                 <SubscribeButton
-                  subscribed={stream.subscribed}
-                  onSubscribe={() => {}}
+                  subscribed={stream.is_subscribed}
+                  onSubscribe={() => subscribeTo(stream)}
+                  onUnsubscribe={() => unsubscribeFrom(stream)}
                 />
               }
             ></CardHeader>

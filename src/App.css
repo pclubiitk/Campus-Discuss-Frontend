@@ -64,3 +64,13 @@
   height: 100%;
   overflow-y: scroll;
 }
+
+.temp {
+  transition: all 0.15s ease-in-out;
+  background: white;
+  border: 1px solid grey;
+}
+
+.temp:hover {
+  background: rgba(128, 128, 128, 0.1);
+}

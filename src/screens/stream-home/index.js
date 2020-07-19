@@ -3,13 +3,16 @@ import * as React from "react";
 import { useSnackbar } from "notistack";
 import { useRouteMatch } from "react-router";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import { streamById } from "../../redux/selectors";
+import { Typography } from '@material-ui/core';
 import PostsList from "../../components/stream_screen";
 import samplePosts from "../../samples/posts.json";
 import { getPostsByStream } from "../../utils/requests";
 import { Screen } from "../utils";
 
 const StreamHome = () => {
+  const history = useHistory();
   const streamId = useRouteMatch().params.id;
   console.log(streamId);
   const [posts, setPosts] = React.useState([]);
@@ -33,7 +36,18 @@ const StreamHome = () => {
   return (
     <Screen
       title={stream.title}
-      renderMain={() => <PostsList postArr={posts} />}
+      renderMain={() => (
+        <>
+          <div
+            style={{ padding: 20 }}
+            className="temp"
+            onClick={() => history.push(`/stream/${stream.pk}/new`)}
+          >
+            <Typography variant="body1">Write a new post</Typography>
+          </div>
+          <PostsList postArr={posts} />
+        </>
+      )}
     />
   );
 };
