@@ -72,8 +72,8 @@ const SideBar = () => {
         {streams.map((stream) => (
           <ListItem
             button
-            key={stream._id}
-            onClick={() => history.push(`/stream/${stream._id}`)}
+            key={stream.pk}
+            onClick={() => history.push(`/stream/${stream.pk}`)}
           >
             <ListItemIcon>
               <RssFeedIcon />

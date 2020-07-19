@@ -44,25 +44,25 @@ export const login = async (username: string, password: string) => {
 
 // Logout
 export const logout = async () => {
-  const res = await sendRequest("/users/auth/logout", "POST", {});
+  const res = await sendRequest("/users/auth/logout/", "POST", {});
   return res;
 };
 
 // Get user feed
 export const getUserFeed = async (): Promise<Array<Types.Post>> => {
-  const res = await sendRequest("/users/feed", "GET");
+  const res = await sendRequest("/users/feed/", "GET");
   return res;
 };
 
 // Get profile
 export const getProfile = async (): Promise<Types.UserData> => {
-  const res = await sendRequest("/users/profile", "GET");
+  const res = await sendRequest("/users/profile/", "GET");
   return res;
 };
 
 // Get subscribed streams
 export const getSubbedStreams = async (): Promise<Array<Types.Stream>> => {
-  const res = await sendRequest("/streams/subbed");
+  const res = await sendRequest("/streams/subbed/");
   return res;
 };
 
@@ -70,8 +70,8 @@ export const getSubbedStreams = async (): Promise<Array<Types.Stream>> => {
 export const getPostsByStream = async (
   streamId: number
 ): Promise<Array<Types.Post>> => {
-  const res = await sendRequest(`/streams/${streamId}/posts`, "GET");
-  return res;
+  const res = await sendRequest(`/streams/${streamId}/posts/`, "GET");
+  return res.post_set;
 };
 
 // Create post
@@ -96,7 +96,7 @@ export const subscribetoStream = async (title: string) => {
 
 // Unsubscribe from stream
 export const unsubscribeFromStream = async (title: string) => {
-  const res = await sendRequest("/streams/unfollow", "DELETE", { title });
+  const res = await sendRequest("/streams/unfollow/", "DELETE", { title });
   return res;
 };
 
@@ -110,6 +110,12 @@ export const deletePost = async (postId: number) => {
 export const fetchPostsbyUser = async (
   userId: number
 ): Promise<Array<Types.Post>> => {
-  const res = await sendRequest(`/users/${userId}/posts`, "GET");
+  const res = await sendRequest(`/users/${userId}/posts/`, "GET");
   return res;
 };
+
+// View Post  
+export const viewPost = async (postId: number) => {
+  const res = await sendRequest(`/posts/view/${postId}/`, "GET");
+  return res;
+}
