@@ -2,18 +2,12 @@
 import React, { useState } from "react";
 import Comment from "../comment";
 import { Collapse, CardActionArea } from "@material-ui/core";
-import { type CommentType } from "../CommentsContainer";
+import { type Comment as CommentType } from "../../types";
 
 const maxViewableComments = 3;
 
 type Props = {
-  userVoted: boolean,
   replies: CommentType[],
-  onUpvote: (id: number) => void,
-  onDownvote: (id: number) => void,
-  onReply: (id: number) => void,
-  openReplyBox: (id: number) => void,
-  setOpenReplyBoxId: (id: ?number) => void,
 };
 
 function CommentReplies(props: Props) {
@@ -23,34 +17,14 @@ function CommentReplies(props: Props) {
   const visibleComments = props.replies
     .slice(0, maxViewableComments)
     .map((reply) => (
-      <Comment
-        key={reply.id}
-        {...reply}
-        userVoted={props.userVoted}
-        onUpvote={(id) => props.onUpvote(id)}
-        onDownvote={(id) => props.onDownvote(id)}
-        onReply={(id) => props.onReply(id)}
-        showReplies={showComments}
-        openReplyBox={(id) => props.openReplyBox(id)}
-        setOpenReplyBoxId={(id) => props.setOpenReplyBoxId(id)}
-      />
+      <Comment comment={reply} showReplies={showComments} key={reply.pk} />
     ));
 
   //comments which were hidden
   const hiddenComments = props.replies
     .slice(maxViewableComments)
     .map((reply) => (
-      <Comment
-        key={reply.id}
-        {...reply}
-        userVoted={props.userVoted}
-        onUpvote={(id) => props.onUpvote(id)}
-        onDownvote={(id) => props.onDownvote(id)}
-        onReply={(id) => props.onReply(id)}
-        showReplies={showComments}
-        openReplyBox={(id) => props.openReplyBox(id)}
-        setOpenReplyBoxId={(id) => props.setOpenReplyBoxId(id)}
-      />
+      <Comment comment={reply} key={reply.pk} showReplies={showComments} />
     ));
 
   return (

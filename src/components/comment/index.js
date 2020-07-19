@@ -1,23 +1,6 @@
 // @flow
-/*
-  Props expected are :
-  1. id
-  2. author : necessary otherwise gives error.
-  3. date
-  4. text
-  5. DP: address of profile picture
-  6. baseUpvotes
-  7. baseDownvotes
-  8. replies
-  9. onUpvote
-  10. onDownvote
-  11. onReply
-  12. showReplies
-  13. openReplyBoxId
-  14. openReplyBox
-*/
 
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import "./style.css";
 import CommentReplies from "../CommentReplies";
 
@@ -41,16 +24,13 @@ import {
   grey,
 } from "@material-ui/core/colors";
 import ReplyIcon from "@material-ui/icons/Reply";
-import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import CancelIcon from "@material-ui/icons/Cancel";
 import Collapse from "@material-ui/core/Collapse";
 import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import { Toolbar } from "@material-ui/core";
+import { type Comment } from "../../types";
+import { createComment } from "../../utils/requests";
+import { useSnackbar } from "notistack";
 
 const spacing = 60; //It controls spacing between nested comments
 
@@ -90,70 +70,21 @@ const getRandomColor = () => {
 };
 
 //returns avatar: image if provided otherwise first letter of author's name
-function AvatarProp(props: { DP?: string, author: string }) {
+function AvatarProp(props: { author: string }) {
   const bgcolor = useRef(getRandomColor()).current;
-  if (!props.DP) {
-    return (
-      <Avatar aria-label="comment" style={{ backgroundColor: bgcolor }}>
-        {props.author[0].toUpperCase()}
-      </Avatar>
-    );
-  } else
-    return (
-      <Avatar
-        aria-label="comment"
-        style={{ backgroundColor: bgcolor }}
-        alt={props.author[0].toUpperCase()}
-        src={props.DP}
-      />
-    );
-}
-
-function DialogBox(props: {
-  open: boolean,
-  handleCancelClose: () => void,
-  setOpenReplyBoxId: (id: ?number) => void,
-}) {
   return (
-    <Dialog
-      open={props.open}
-      onClose={props.handleCancelClose}
-      aria-labelledby="draggable-dialog-title"
-    >
-      <DialogContent>
-        <DialogContentText>
-          Are you sure you want to discard the reply?
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={props.handleCancelClose} color="primary">
-          No
-        </Button>
-        <Button
-          onClick={() => {
-            props.setOpenReplyBoxId(null);
-            props.handleCancelClose();
-          }}
-          color="primary"
-        >
-          Yes
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <Avatar aria-label="comment" style={{ backgroundColor: bgcolor }}>
+      {props.author[0].toUpperCase()}
+    </Avatar>
   );
 }
 
-function ReplyBox(props: { onReply: () => void }) {
+function ReplyBox(props: {
+  onReply: (string) => Promise<void>,
+  onClose: () => void,
+}) {
   const classes = useStyles(props);
-  const [open, setOpen] = useState(false);
-
-  const handleCancelClose = () => {
-    setOpen(false);
-  };
-
-  const handleCancelOpen = () => {
-    setOpen(true);
-  };
+  const [text, setText] = React.useState("");
 
   return (
     <>
@@ -163,6 +94,8 @@ function ReplyBox(props: { onReply: () => void }) {
           rowsMax={6}
           placeholder="Reply"
           multiline
+          value={text}
+          onChange={(e) => setText(e.target.value)}
           variant="outlined"
           margin="normal"
           fullWidth
@@ -175,7 +108,7 @@ function ReplyBox(props: { onReply: () => void }) {
             variant="contained"
             color="primary"
             startIcon={<CancelIcon />}
-            onClick={handleCancelOpen}
+            onClick={props.onClose}
             className={classes.button}
             id="cancelAlign"
           >
@@ -186,18 +119,12 @@ function ReplyBox(props: { onReply: () => void }) {
             color="primary"
             startIcon={<ReplyIcon />}
             onClick={() => {
-              props.onReply();
+              props.onReply(text);
             }}
             id="replyalign"
           >
             Reply
           </Button>
-          <DialogBox
-            {...props}
-            open={open}
-            handleCancelClose={() => handleCancelClose()}
-            setOpenReplyBoxId={(id) => {}}
-          />
         </div>
       </CardActions>
     </>
@@ -205,51 +132,37 @@ function ReplyBox(props: { onReply: () => void }) {
 }
 
 function MaximisedComment(props: {
-  id: number,
-  author: string,
-  date: string,
-  text: string,
-  baseUpvotes: number,
-  baseDownvotes: number,
-  userVoted: boolean,
-  openReplyBox: (id: number) => void,
-  setOpenReplyBoxId: (id: ?number) => void,
-  onReply: (id: number) => {},
-  onUpvote: (id: number) => void,
-  onDownvote: (id: number) => void,
+  comment: Comment,
+  onCreateReply: (comment: Comment) => void,
 }) {
   const classes = useStyles(props);
-  const [vote, setVote] = useState(props.userVoted);
+  const { enqueueSnackbar } = useSnackbar();
+  const [replyOpen, openReply] = React.useState(false);
 
-  const onReply = (props) => {
-    // Handle reply button here
-    props.setOpenReplyBoxId(null);
-    props.onReply(props.id);
-  };
-
-  const onUpvote = (props) => {
-    // Handle upvote here
-    setVote(vote === 1 ? 0 : 1);
-    props.onUpvote(props.id);
-  };
-
-  const onDownvote = (props) => {
-    // Handle downvote here
-    setVote(vote === -1 ? 0 : -1);
-    props.onDownvote(props.id);
+  const onReply = async (text: string) => {
+    try {
+      // Handle reply
+      const comment = await createComment(text, props.comment.post);
+      openReply(false);
+      props.onCreateReply && props.onCreateReply(comment);
+    } catch (error) {
+      enqueueSnackbar("An error occured while posting your comment.", {
+        variant: "error",
+      });
+    }
   };
 
   return (
     <Card className={classes.main}>
       {/* Comment Header */}
       <CardHeader
-        avatar={<AvatarProp {...props} />}
+        avatar={<AvatarProp author={props.comment.user.name} />}
         title={
           <Typography noWrap>
-            <b>{props.author}</b>
+            <b>{props.comment.user.name}</b>
           </Typography>
         }
-        subheader={<i>{props.date}</i>}
+        subheader={<i>{props.comment.created_at}</i>}
         className={classes.header}
       />
       {/* Comment Body */}
@@ -260,48 +173,22 @@ function MaximisedComment(props: {
           component="p"
           className={classes.contentShown}
         >
-          {props.text}
+          {props.comment.content}
         </Typography>
       </CardContent>
-
       {/* Lowermost of Comment */}
       <CardActions disableSpacing>
-        {/* Up Vote Icon */}
-        <Tooltip title="Upvote" aria-label="upvote">
-          <IconButton aria-label="upvote" onClick={() => onUpvote(props)}>
-            <ThumbUpIcon color={vote === 1 ? "primary" : "inherit"} />
-          </IconButton>
-        </Tooltip>
-        {/* Up Vote Count */}
-        <Typography variant="body2" color="textSecondary" component="p">
-          {props.baseUpvotes + (vote === 1 ? 1 : 0)}
-        </Typography>
-        {/* Down Vote Icon */}
-        <Tooltip title="Downvote" aria-label="downvote">
-          <IconButton aria-label="downvote" onClick={() => onDownvote(props)}>
-            <ThumbDownIcon color={vote === -1 ? "primary" : "inherit"} />
-          </IconButton>
-        </Tooltip>
-        {/* Down Vote Count */}
-        <Typography variant="body2" color="textSecondary" component="p">
-          {props.baseDownvotes + (vote === -1 ? 1 : 0)}
-        </Typography>
         {/* Reply button*/}
         <div className="actions">
           <Tooltip aria-label="reply" title="Reply">
-            <IconButton
-              aria-label="reply"
-              onClick={() => {
-                props.setOpenReplyBoxId(props.id);
-              }}
-            >
+            <IconButton aria-label="reply" onClick={() => openReply((a) => !a)}>
               <ReplyIcon fontSize="large" />
             </IconButton>
           </Tooltip>
         </div>
       </CardActions>
-      <Collapse in={props.openReplyBox(props.id)} timeout="auto" unmountOnExit>
-        <ReplyBox {...props} onReply={() => onReply(props)} />
+      <Collapse in={replyOpen} timeout="auto" unmountOnExit>
+        <ReplyBox onReply={onReply} onClose={() => openReply(false)} />
       </Collapse>
     </Card>
   );
@@ -331,41 +218,21 @@ function MinimisedComment(props: { author: string, text: string }) {
   );
 }
 
-const Comment = (props: {
-  id: number,
-  showReplies: boolean,
-  replies: any,
-  author: string,
-  date: string,
-  text: string,
-  baseUpvotes: number,
-  baseDownvotes: number,
-  userVoted: boolean,
-  onUpvote: (id: number) => void,
-  onDownvote: (id: number) => void,
-  onReply: (id: number) => any,
-  setOpenReplyBoxId: (id: ?number) => void,
-  openReplyBox: (id: number) => void,
-}) => {
+const SingleComment = (props: { comment: Comment, showReplies: boolean }) => {
   const classes = useStyles(props);
+  const [replies, setReplies] = React.useState(props.comment.replies);
+
+  const createReply = (comment: Comment) => {
+    setReplies([...replies, comment]);
+  };
 
   //Handle replies by calling CommentReplies making recursion
   function handleReplies() {
     if (props.showReplies) {
-      if (!props.replies) {
-        return;
-      }
+      if (!replies.length) return;
       return (
         <div className={classes.indent}>
-          <CommentReplies
-            replies={props.replies}
-            userVoted={props.userVoted}
-            onUpvote={(id) => props.onUpvote(id)}
-            onDownvote={(id) => props.onDownvote(id)}
-            onReply={(id) => props.onReply(id)}
-            setOpenReplyBoxId={(id) => props.setOpenReplyBoxId(id)}
-            openReplyBox={(id) => props.openReplyBox(id)}
-          />
+          <CommentReplies replies={replies} />
         </div>
       );
     } else {
@@ -376,21 +243,25 @@ const Comment = (props: {
   /* It toggles between minimised comments and maximised comments*/
   function handleMainComment() {
     if (props.showReplies) {
-      return <MaximisedComment {...props} />;
+      return (
+        <MaximisedComment comment={props.comment} onCreateReply={createReply} />
+      );
     } else {
-      return <MinimisedComment {...props} />;
+      return (
+        <MinimisedComment
+          author={props.comment.user.name}
+          text={props.comment.content}
+        />
+      );
     }
   }
 
-  const replies = handleReplies();
-  const mainComment = handleMainComment();
-
   return (
     <>
-      {mainComment}
-      {replies}
+      {handleMainComment()}
+      {handleReplies()}
     </>
   );
 };
 
-export default Comment;
+export default SingleComment;

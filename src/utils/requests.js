@@ -88,6 +88,26 @@ export const createPost = async (
   return res;
 };
 
+// Get post comments
+export const getPostComments = async (postId: number) => {
+  const res = await sendRequest(`/comments/view/${postId}`, "GET");
+  return res;
+};
+
+// Reply to comment
+export const createComment = async (
+  content: string,
+  postId: number,
+  commentId?: number
+) => {
+  const res = await sendRequest("/comments/create", "POST", {
+    content,
+    post_id: postId,
+    parent_id: commentId,
+  });
+  return res;
+};
+
 // Subscribe to stream
 export const subscribeToStream = async (pk: string) => {
   const res = await sendRequest("/streams/follow/", "PUT", { pk });
@@ -114,11 +134,11 @@ export const fetchPostsbyUser = async (
   return res;
 };
 
-// View Post  
+// View Post
 export const viewPost = async (postId: number) => {
   const res = await sendRequest(`/posts/view/${postId}/`, "GET");
   return res;
-}
+};
 
 // Get all Streams
 export const getAllStreams = async (): Promise<Array<Types.Stream>> => {

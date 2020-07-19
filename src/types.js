@@ -27,3 +27,12 @@ export type Post = {
   author: UserData,
   stream: number,
 };
+
+export type Comment = {|
+  pk: number,
+  post: any,
+  content: string,
+  created_at: string,
+  user: UserData,
+  replies: Array<Comment>,
+|};
