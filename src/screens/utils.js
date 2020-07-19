@@ -36,7 +36,7 @@ export const Screen = (props: Props) => {
  */
 export const useOpenStream = () => {
   const match = useRouteMatch();
-  const streamId = match.params.id;
+  const streamId = parseInt(match.params.id);
   const stream = ((useSelector(streamById(streamId)): any): Stream);
   return stream;
 };

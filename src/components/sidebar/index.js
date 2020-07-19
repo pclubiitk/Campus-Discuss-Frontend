@@ -82,6 +82,14 @@ const SideBar = () => {
           </ListItem>
         ))}
       </List>
+      <Divider />
+      <div className={classes.profile} onClick={() => history.push("/streams")}>
+        <CardHeader
+          avatar={() => null}
+          title={"Explore streams"}
+          // subheader={profile.username}
+        />
+      </div>
     </div>
   );
 

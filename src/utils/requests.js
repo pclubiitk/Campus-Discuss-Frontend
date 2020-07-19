@@ -89,14 +89,14 @@ export const createPost = async (
 };
 
 // Subscribe to stream
-export const subscribetoStream = async (title: string) => {
-  const res = await sendRequest("/streams/follow/", "PUT", { title });
+export const subscribeToStream = async (pk: string) => {
+  const res = await sendRequest("/streams/follow/", "PUT", { pk });
   return res;
 };
 
 // Unsubscribe from stream
-export const unsubscribeFromStream = async (title: string) => {
-  const res = await sendRequest("/streams/unfollow/", "DELETE", { title });
+export const unsubscribeFromStream = async (pk: string) => {
+  const res = await sendRequest("/streams/unfollow/", "DELETE", { pk });
   return res;
 };
 
@@ -119,3 +119,9 @@ export const viewPost = async (postId: number) => {
   const res = await sendRequest(`/posts/view/${postId}/`, "GET");
   return res;
 }
+
+// Get all Streams
+export const getAllStreams = async (): Promise<Array<Types.Stream>> => {
+  const res = await sendRequest("/streams/all/");
+  return res;
+};
